@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Cube1
   - Destroyable
+  - Floor
   layers:
   - Default
   - TransparentFX
