@@ -100,6 +100,15 @@ public class RaycastScript : MonoBehaviour
             isHitting = false;
             ClearOutline();
         }
+
+        // Position system control canvas in front of player when menu is open
+        if (currentState == GameState.SystemControl)
+        {
+            systemControlCanvas.transform.position = transform.position + transform.forward * 5f;
+            systemControlCanvas.transform.LookAt(player);
+            systemControlCanvas.transform.Rotate(0, 180, 0);
+            systemControlCanvas.SetActive(true);
+        }
     }
 
     // Clear the outline from the last hit object
@@ -127,8 +136,7 @@ public class RaycastScript : MonoBehaviour
     // Handle system control menu navigation and selection
     void SystemControl()
     {
-        systemControlCanvas.SetActive(true);
-
+        ClearOutline();
         float joyY = Input.GetAxis("Vertical");
 
         bool pcUp = Input.GetKeyDown(KeyCode.UpArrow);
