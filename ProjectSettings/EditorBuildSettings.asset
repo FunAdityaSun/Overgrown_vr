@@ -5,18 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/assignment01.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 0
-    path: Assets/MiLabCardboardExtension/Scenes/Map Bluetooth Key.unity
-    guid: 1eb807ac90408844da5fd17e087fea1e
+  - enabled: 1
+    path: Assets/Scenes/lobbyScene.unity
+    guid: 20feafef9b5e725459a62f37f1aece7f
   - enabled: 1
     path: Assets/Scenes/mainScene.unity
     guid: 4c46dfa1fc0c5094ea95df94e59e9cae
-  - enabled: 0
-    path: Assets/Scenes/testScene.unity
-    guid: 9a222ed80e5e0ad4498dc51a51fe6057
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 43ae99829cce94048921439cd35a1656, type: 2}

@@ -27,7 +27,9 @@ public class RaycastScript : MonoBehaviour
     [SerializeField] private Image[] systemControlIcons;
     private int currentSystemControlIdx = 0;
     private float nextJoyStickMove = 0f;
-    
+
+    private GameObject currentUITarget;
+
 
     void Start()
     {
@@ -46,6 +48,15 @@ public class RaycastScript : MonoBehaviour
                 {
                     TeleportPlayer(new Vector3(hit.point.x, player.position.y + 0.2f, hit.point.z));
                 }
+            }
+        }
+
+        if (Input.GetButtonDown("js5") || Input.GetKeyDown(KeyCode.R))
+        {
+            Debug.Log("Hitting R");
+            if (currentUITarget != null && currentUITarget.GetComponent<UnityEngine.UI.Button>())
+            {
+                currentUITarget.GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
             }
         }
 
@@ -75,7 +86,45 @@ public class RaycastScript : MonoBehaviour
 
         UnityEngine.Debug.DrawRay(saberOrigin, transform.forward * rayDistance, Color.red);
 
-        if (Physics.Raycast(ray, out hit, rayDistance))
+        //If hit canvas UI element, trigger "hover" effects
+        int layerMask = LayerMask.GetMask("UI");
+        if (Physics.Raycast(ray, out hit, rayDistance, layerMask))
+        {
+            if (currentUITarget != hit.transform.gameObject)
+            {
+                UnityEngine.UI.Image background;
+                if (currentUITarget != null)
+                {
+                    background = currentUITarget.GetComponent<UnityEngine.UI.Image>();
+                    if (background != null)
+                    {
+                        background.color = Color.white;
+                    }
+                }
+                currentUITarget = hit.transform.gameObject;
+
+                background = currentUITarget.GetComponent<UnityEngine.UI.Image>();
+                if (background != null)
+                {
+                    background.color = Color.yellow;
+                }
+            }
+        }
+        else
+        {
+            if (currentUITarget != null)
+            {
+                UnityEngine.UI.Image background = currentUITarget.GetComponent<UnityEngine.UI.Image>();
+                if (background != null)
+                {
+                    background.color = Color.white;
+                }
+                currentUITarget = null;
+            }
+        }
+
+        layerMask = LayerMask.GetMask("Interactable");
+        if (Physics.Raycast(ray, out hit, rayDistance, layerMask))
         {
             Outline currentOutline = hit.collider.GetComponent<Outline>();
             isHitting = true;
