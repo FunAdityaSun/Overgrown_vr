@@ -261,10 +261,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RaycastScript
   player: {fileID: 4576046545444964323}
   rayDistance: 20
-  systemControlCanvas: {fileID: 0}
-  systemControlIcons:
-  - {fileID: 0}
-  - {fileID: 0}
+  systemControlCanvasPrefab: {fileID: 3241870209713163128, guid: 11e4340c7f4389f4d9254cb60377c55d, type: 3}
 --- !u!120 &8728593850567410657
 LineRenderer:
   serializedVersion: 3

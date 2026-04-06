@@ -23,8 +23,9 @@ public class RaycastScript : MonoBehaviour
     private LineRenderer lightSaber;
 
     // System control parameters
-    [SerializeField] private GameObject systemControlCanvas;
-    [SerializeField] private Image[] systemControlIcons;
+    [SerializeField] private GameObject systemControlCanvasPrefab;
+    private GameObject systemControlCanvas;
+    private Image[] systemControlIcons;
     private int currentSystemControlIdx = 0;
     private float nextJoyStickMove = 0f;
 
@@ -33,6 +34,8 @@ public class RaycastScript : MonoBehaviour
 
     void Start()
     {
+        systemControlCanvas = Instantiate(systemControlCanvasPrefab, gameObject.transform);
+        systemControlIcons = systemControlCanvas.GetComponentsInChildren<Image>();
         lastOutline = null;
         lightSaber = GetComponent<LineRenderer>();
         systemControlCanvas.SetActive(false);
