@@ -26,7 +26,7 @@ public class RaycastScript : MonoBehaviour
     [SerializeField] private GameObject systemControlCanvasPrefab;
     private GameObject systemControlCanvas;
     private Image[] systemControlIcons;
-    private int currentSystemControlIdx = 0;
+    private int currentSystemControlIdx = 1;
     private float nextJoyStickMove = 0f;
 
     private GameObject currentUITarget;
@@ -195,7 +195,7 @@ public class RaycastScript : MonoBehaviour
         bool pcDown = Input.GetKeyDown(KeyCode.DownArrow);
 
         // Highlight the first option by default when entering the menu
-        if (currentSystemControlIdx == 0)
+        if (currentSystemControlIdx == 1)
         {
             foreach (Image icon in systemControlIcons) icon.color = Color.white;
             systemControlIcons[currentSystemControlIdx].color = Color.yellow;
@@ -205,7 +205,7 @@ public class RaycastScript : MonoBehaviour
         if ((joyY > 0.5f || pcUp) && Time.time > nextJoyStickMove)
         {
             currentSystemControlIdx--;
-            if (currentSystemControlIdx < 0) currentSystemControlIdx = systemControlIcons.Length - 1;
+            if (currentSystemControlIdx < 1) currentSystemControlIdx = systemControlIcons.Length - 1;
             foreach (Image icon in systemControlIcons) icon.color = Color.white;
             systemControlIcons[currentSystemControlIdx].color = Color.yellow;
             nextJoyStickMove = Time.time + 0.2f; // Add a delay to prevent rapid changes
@@ -213,7 +213,7 @@ public class RaycastScript : MonoBehaviour
         else if ((joyY < -0.5f || pcDown) && Time.time > nextJoyStickMove)
         {
             currentSystemControlIdx++;
-            if (currentSystemControlIdx >= systemControlIcons.Length) currentSystemControlIdx = 0;
+            if (currentSystemControlIdx >= systemControlIcons.Length) currentSystemControlIdx = 1;
             foreach (Image icon in systemControlIcons) icon.color = Color.white;
             systemControlIcons[currentSystemControlIdx].color = Color.yellow;
             nextJoyStickMove = Time.time + 0.2f; // Add a delay to prevent rapid changes
@@ -224,12 +224,12 @@ public class RaycastScript : MonoBehaviour
         {
             switch (currentSystemControlIdx)
             {
-                case 0: // Resume game
+                case 1: // Resume game
                     systemControlCanvas.SetActive(false);
                     FreezePlayer(false);
                     currentState = GameState.Normal;
                     break;
-                case 1: // Quit game
+                case 2 : // Quit game
                     Application.Quit();
                     break;
             }
