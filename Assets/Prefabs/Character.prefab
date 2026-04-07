@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4576046545444964323}
   - component: {fileID: 5156129242476773198}
   - component: {fileID: 9039205698269674594}
-  - component: {fileID: 7797693486646842542}
   - component: {fileID: 8276117986701189280}
   - component: {fileID: 4229000469986365546}
   - component: {fileID: -3133135785802461695}
@@ -78,33 +77,6 @@ MonoBehaviour:
   speed: 5
   cameraObj: {fileID: 3542036709393996020}
   joyStickMode: 0
---- !u!54 &7797693486646842542
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2571153171339265014}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
 --- !u!65 &8276117986701189280
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -143,6 +115,7 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
+  - {fileID: 9039205698269674594}
   - {fileID: -3133135785802461695}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &-3133135785802461695

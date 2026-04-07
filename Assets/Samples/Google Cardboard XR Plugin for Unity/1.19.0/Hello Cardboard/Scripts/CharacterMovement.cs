@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovement : NetworkBehaviour
 {
     CharacterController charCntrl;
     [Tooltip("The speed at which the character will move.")]
@@ -13,14 +14,18 @@ public class CharacterMovement : MonoBehaviour
     public bool joyStickMode;
 
     // Start is called before the first frame update
-    void Start()
+    public override void Spawned()
     {
         charCntrl = GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
-    void Update()
+    public override void FixedUpdateNetwork()
     {
+        if (HasStateAuthority==false)
+        {
+            return;
+        }
         //Get horizontal and Vertical movements
         float horComp = Input.GetAxis("Horizontal");
         float vertComp = Input.GetAxis("Vertical");
@@ -43,11 +48,13 @@ public class CharacterMovement : MonoBehaviour
 
         moveVect += rightVect * horComp;
         moveVect += forwardVect * vertComp;
+        //Since not simplemove need manual gravity
+        moveVect += new Vector3(0f,-9.8f,0f);
 
         moveVect *= speed;
      
 
-        charCntrl.SimpleMove(moveVect);
+        charCntrl.Move(moveVect*Runner.DeltaTime);
 
 
     }
