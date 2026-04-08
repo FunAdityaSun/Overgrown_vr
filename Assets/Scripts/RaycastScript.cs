@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Fusion;
 
 public class RaycastScript : MonoBehaviour
 {
@@ -12,13 +13,12 @@ public class RaycastScript : MonoBehaviour
 
     // Player parameters
     public Transform player;
-    private float mvmtSpeed = 5f;
+    private float mvmtSpeed = 10f;
     
     private Outline lastOutline;
 
     // Raycast parameters
     public float rayDistance = 20f;
-    private bool isHitting = false;
     private RaycastHit hit;
     private LineRenderer lightSaber;
 
@@ -43,20 +43,18 @@ public class RaycastScript : MonoBehaviour
 
     void Update()
     {
-        if (isHitting)
+        // Teleport player to hit point on floor
+        if ((Input.GetButtonDown("js10") || Input.GetKeyDown(KeyCode.E)) && hit.collider != null)
         {
-            if ((Input.GetButtonDown("js10") || Input.GetKeyDown(KeyCode.E)) && hit.collider != null)
+            if (hit.collider.CompareTag("Floor"))
             {
-                if (hit.collider.CompareTag("Floor"))
-                {
-                    TeleportPlayer(new Vector3(hit.point.x, player.position.y + 0.2f, hit.point.z));
-                }
+                TeleportPlayer(new Vector3(hit.point.x, player.position.y + 0.2f, hit.point.z));
             }
         }
 
+        // Interact with UI elements
         if (Input.GetButtonDown("js5") || Input.GetKeyDown(KeyCode.R))
         {
-            Debug.Log("Hitting R");
             if (currentUITarget != null && currentUITarget.GetComponent<UnityEngine.UI.Button>())
             {
                 currentUITarget.GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
@@ -89,58 +87,49 @@ public class RaycastScript : MonoBehaviour
 
         UnityEngine.Debug.DrawRay(saberOrigin, transform.forward * rayDistance, Color.red);
 
-        //If hit canvas UI element, trigger "hover" effects
-        int layerMask = LayerMask.GetMask("UI");
-        if (Physics.Raycast(ray, out hit, rayDistance, layerMask))
+        int cominedLayerMask = LayerMask.GetMask("UI", "Interactable", "Floor", "Default");
+        if (Physics.Raycast(ray, out hit, rayDistance, cominedLayerMask))
         {
-            if (currentUITarget != hit.transform.gameObject)
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("UI"))
             {
-                UnityEngine.UI.Image background;
-                if (currentUITarget != null)
+                if (currentUITarget != hit.transform.gameObject)
                 {
+                    UnityEngine.UI.Image background;
+                    if (currentUITarget != null)
+                    {
+                        background = currentUITarget.GetComponent<UnityEngine.UI.Image>();
+                        if (background != null)
+                        {
+                            background.color = Color.white;
+                        }
+                    }
+                    currentUITarget = hit.transform.gameObject;
+
                     background = currentUITarget.GetComponent<UnityEngine.UI.Image>();
                     if (background != null)
                     {
-                        background.color = Color.white;
+                        background.color = Color.yellow;
                     }
                 }
-                currentUITarget = hit.transform.gameObject;
-
-                background = currentUITarget.GetComponent<UnityEngine.UI.Image>();
-                if (background != null)
-                {
-                    background.color = Color.yellow;
-                }
             }
-        }
-        else
-        {
-            if (currentUITarget != null)
+            else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Interactable"))
             {
-                UnityEngine.UI.Image background = currentUITarget.GetComponent<UnityEngine.UI.Image>();
-                if (background != null)
+                Outline currentOutline = hit.collider.GetComponent<Outline>();
+
+                // If new object hit, update outline
+                if (currentOutline != null)
                 {
-                    background.color = Color.white;
+                    if (lastOutline != currentOutline)
+                    {
+                        ClearOutline();
+                        currentOutline.enabled = true;
+                        lastOutline = currentOutline;
+                    }                
                 }
-                currentUITarget = null;
-            }
-        }
-
-        layerMask = LayerMask.GetMask("Interactable");
-        if (Physics.Raycast(ray, out hit, rayDistance, layerMask))
-        {
-            Outline currentOutline = hit.collider.GetComponent<Outline>();
-            isHitting = true;
-
-            // If new object hit, update outline
-            if (currentOutline != null)
-            {
-                if (lastOutline != currentOutline)
+                else
                 {
                     ClearOutline();
-                    currentOutline.enabled = true;
-                    lastOutline = currentOutline;
-                }                
+                }
             }
             else
             {
@@ -149,7 +138,6 @@ public class RaycastScript : MonoBehaviour
         }
         else
         {
-            isHitting = false;
             ClearOutline();
         }
 
@@ -176,6 +164,15 @@ public class RaycastScript : MonoBehaviour
     // Teleport the player to the target position
     void TeleportPlayer(Vector3 targetPosition)
     {
+        // Teleport player using NetworkTransform for multiplayer
+        NetworkTransform networkTransform = player.GetComponent<NetworkTransform>();
+        if (networkTransform != null)
+        {
+            networkTransform.Teleport(targetPosition);
+            return; 
+        }
+
+        // Single player teleportation fallback
         CharacterController cc = player.GetComponent<CharacterController>();
         if (cc != null)
         {
