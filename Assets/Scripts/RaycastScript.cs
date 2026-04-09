@@ -1,7 +1,9 @@
-using UnityEngine;
-using UnityEngine.UI;
+using ExitGames.Client.Photon.StructWrapping;
 using Fusion;
 using System.Collections;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class RaycastScript : MonoBehaviour
 {
@@ -15,7 +17,7 @@ public class RaycastScript : MonoBehaviour
     // Player parameters
     public Transform player;
     private float mvmtSpeed = 10f;
-    
+
     private Outline lastOutline;
 
     // Raycast parameters
@@ -33,9 +35,10 @@ public class RaycastScript : MonoBehaviour
     private GameObject currentUITarget;
 
     // Interaction parameters
-    private GameObject interactableObject;
+    private GameObject heldObject;
     private bool isHoldingObject = false;
-    private float requiredHoldTime = 0.5f;
+    public Vector3 targetPosition = new Vector3(0.5f, -0.3f, 1f);
+    public float requiredHoldTime = 0.5f;
     private float holdTimer = 0f;
 
 
@@ -63,88 +66,46 @@ public class RaycastScript : MonoBehaviour
             {
                 currentUITarget.GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
             }
-            // Interact with soil beds
-            if (isHoldingObject && hit.collider.CompareTag("Soilbed"))
+            // Interact Game Objects if Holding Item
+            else if (isHoldingObject && hit.collider != null)
             {
-                PlantBed bed = hit.collider.GetComponent<PlantBed>();
-                // If holding a seed bag, try to plant in the bed
-                if (interactableObject.CompareTag("Seedbag"))
-                {
-                    if (bed.HasEmptySlot())
-                    {
-                        Debug.Log("Planting seed...");
-                        SeedBag seedData = interactableObject.GetComponent<SeedBag>();
-                        bed.PlantSeed(seedData.plantPrefab);
-                        return;
-                    }
-                    else
-                    {
-                        Debug.Log("No empty slots available in this bed!");
-                        return;
-                    }
-                }
-                // If holding a watering can, try to water the bed
-                else if (interactableObject.CompareTag("Watercan"))
-                {
-                    if (bed.NeedsWater())
-                    {
-                        Debug.Log("Watering bed...");
-                        bed.WaterBed();
-                        return;
-                    }
-                    else
-                    {
-                        Debug.Log("This bed doesn't need water right now!");
-                        return;
-                    }
-                }
-            }
-            // If holing a pot and select a flower, put flower in pot
-            else if (isHoldingObject && hit.collider.CompareTag("Flower"))
-            {
-                if (hit.collider.CompareTag("Flower"))
-                {
-                    Debug.Log("Picked flower!");
-                    GameObject flower = hit.collider.gameObject;
-                    flower.transform.SetParent(interactableObject.transform);
-                    flower.transform.localPosition = Vector3.zero;
-                    return;
-                }
+                HandleItemInteractions();
             }
         }
 
         // Pickup or drop object after trigger button is held for a certain amount of time
         if (Input.GetButton("js0") || Input.GetKey(KeyCode.R))
         {
-            holdTimer += Time.deltaTime;
-            Debug.Log("Hold timer: " + holdTimer);
+            if (holdTimer >= 0f)
+            {
+                holdTimer += Time.deltaTime;
+            }
             if (holdTimer >= requiredHoldTime)
             {
                 if (isHoldingObject)
                 {
-                    interactableObject.transform.SetParent(null);
-                    interactableObject.GetComponent<Rigidbody>().isKinematic = false;
-                    isHoldingObject = false;
-                    interactableObject = null;
+                    DropHeldItem();
                 }
                 else if (hit.collider.CompareTag("Pot") || hit.collider.CompareTag("Watercan") || hit.collider.CompareTag("Seedbag"))
                 {
-                    interactableObject = hit.collider.gameObject;
-                    interactableObject.transform.SetParent(transform);
-                    interactableObject.GetComponent<Rigidbody>().isKinematic = true;
-                    interactableObject.transform.localPosition = new Vector3(0.5f, -0.3f, 1f);
-                    if (interactableObject.CompareTag("Pot"))
+                    heldObject = hit.collider.gameObject;
+                    heldObject.transform.SetParent(transform);
+                    heldObject.GetComponent<Rigidbody>().isKinematic = true;
+                    heldObject.transform.localPosition = targetPosition;
+                    heldObject.transform.localRotation = Quaternion.Euler(-120, 0, -45);
+                    if (heldObject.CompareTag("Watercan"))
                     {
-                        interactableObject.transform.localRotation = Quaternion.Euler(-90, 0, 0);
+                        heldObject.transform.localRotation = Quaternion.Euler(-150, 0, -45);
                     }
                     isHoldingObject = true;
                 }
 
                 holdTimer = -1f;
-            }     
+            }
         }
-        else if (Input.GetButtonUp("js0") || Input.GetKeyUp(KeyCode.R))
+        else
         {
+            // Debug.Log("Hold timer: " + holdTimer);
             holdTimer = 0f;
         }
 
@@ -161,7 +122,105 @@ public class RaycastScript : MonoBehaviour
         }
     }
 
-    // FixedUpdate is called once per frame
+    void HandleItemInteractions()
+    {
+        // If looking at soilbed
+        if (hit.collider.CompareTag("Soilbed"))
+        {
+            // If holding a seed bag, try to plant in the bed
+            PlantBed bed = hit.collider.GetComponent<PlantBed>();
+            if (heldObject.CompareTag("Seedbag"))
+            {
+                if (bed.HasEmptySlot())
+                {
+                    Debug.Log("Planting seed...");
+                    SeedBag seedBag = heldObject.GetComponent<SeedBag>();
+                    bed.PlantSeed(seedBag.plantPrefab);
+                    seedBag.use();
+                    if (seedBag.uses <= 0)
+                    {
+                        DropHeldItem();
+                    }
+                    return;
+                }
+                else
+                {
+                    Debug.Log("No empty slots available in this bed!");
+                    return;
+                }
+            }
+            // If holding a watering can, try to water the bed
+            else if (heldObject.CompareTag("Watercan"))
+            {
+                if (bed.NeedsWater())
+                {
+                    WaterCan waterCan = heldObject.GetComponent<WaterCan>();
+
+                    if (waterCan.uses > 0)
+                    {
+                        Debug.Log("Watering bed...");
+                        waterCan.Use();
+                        bed.WaterBed((WaterColor)(int)waterCan.selectedColor);
+                        return;
+                    }
+                    else
+                    {
+                        Debug.Log("Water can is empty...");
+                    }
+                }
+                else
+                {
+                    Debug.Log("This bed doesn't need water right now!");
+                    return;
+                }
+            }
+        }
+        // If looking at flower
+        else if (hit.collider.CompareTag("Flower"))
+        {
+            // if holing a pot, put flower in pot
+            if (heldObject.CompareTag("Pot"))
+            {
+                Debug.Log("Picked flower!");
+                GameObject flower = hit.collider.gameObject;
+                flower.transform.SetParent(heldObject.transform);
+                flower.transform.localPosition = Vector3.zero;
+                return;
+            }
+        }
+        // If looking at dye sack
+        else if (hit.collider.CompareTag("Dye"))
+        {
+            if (heldObject.CompareTag("Watercan"))
+            {
+                // if holing a water can, change its dye type
+                DyeSack dyeSack = hit.collider.gameObject.GetComponent<DyeSack>();
+                WaterCan waterCan = heldObject.GetComponent<WaterCan>();
+                Debug.Log("Changed dye type!");
+                waterCan.Change((WaterCan.WaterColor)(int)dyeSack.selectedColor);
+            }
+        }
+        // If looking at well
+        else if (hit.collider.CompareTag("Well"))
+        {
+            if (heldObject.CompareTag("Watercan"))
+            {
+                // if holing a water can, refill it
+                WaterCan waterCan = heldObject.GetComponent<WaterCan>();
+                Debug.Log("Refilled Water!");
+                waterCan.Fill(3);
+            }
+        }
+    }
+
+    void DropHeldItem()
+    {
+        heldObject.transform.SetParent(null);
+        heldObject.GetComponent<Rigidbody>().isKinematic = false;
+        isHoldingObject = false;
+        heldObject = null;
+    }
+
     void FixedUpdate()
     {
         Vector3 saberOrigin = transform.position + new Vector3(0, -0.5f, 0);
@@ -214,7 +273,7 @@ public class RaycastScript : MonoBehaviour
                         ClearOutline();
                         currentOutline.enabled = true;
                         lastOutline = currentOutline;
-                    }                
+                    }
                 }
                 else
                 {
@@ -324,7 +383,7 @@ public class RaycastScript : MonoBehaviour
                     FreezePlayer(false);
                     currentState = GameState.Normal;
                     break;
-                case 2 : // Quit game
+                case 2: // Quit game
                     Application.Quit();
                     break;
             }

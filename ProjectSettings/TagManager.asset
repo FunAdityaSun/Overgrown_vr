@@ -9,6 +9,9 @@ TagManager:
   - Seedbag
   - Watercan
   - Soilbed
+  - Flower
+  - Well
+  - Dye
   layers:
   - Default
   - TransparentFX

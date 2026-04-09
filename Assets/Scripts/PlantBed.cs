@@ -9,10 +9,20 @@ public class PlantSlot
     public bool isGrown = false;
     public GameObject assignedPrefab;
     public float growthTimer = 5f;
+
+    public WaterColor selectedColor = WaterColor.White;
+}
+public enum WaterColor
+{
+    White = 0,
+    Red = 1,
+    Yellow = 2,
+    Blue = 3
 }
 
 public class PlantBed : MonoBehaviour
 {
+    public Material[] plantMaterials;
     private PlantSlot[] plantSlots; 
 
     void Start()
@@ -38,7 +48,7 @@ public class PlantBed : MonoBehaviour
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // Loop through every slot to check if it's currently growing
         for (int i = 0; i < plantSlots.Length; i++)
@@ -91,16 +101,14 @@ public class PlantBed : MonoBehaviour
     }
 
     // Water all planted seeds that are currently waiting for water
-    public void WaterBed()
+    public void WaterBed(WaterColor newColor)
     {
-        bool wateredAnything = false;
-        
         foreach (var slot in plantSlots)
         {
             if (slot.isPlanted && !slot.isWatered && !slot.isGrown)
             {
                 slot.isWatered = true;
-                wateredAnything = true;
+                slot.selectedColor = newColor;
             }
         }
     }
@@ -109,10 +117,11 @@ public class PlantBed : MonoBehaviour
     private void GrowPlant(PlantSlot slot)
     {
         slot.isGrown = true;
-        
-        if (slot.assignedPrefab != null && slot.spawnPoint != null)
-        {
-            Instantiate(slot.assignedPrefab, slot.spawnPoint.position, slot.spawnPoint.rotation);
-        }
+
+        // keep a reference to the new plant so we can change color
+        GameObject newPlant = Instantiate(slot.assignedPrefab, slot.spawnPoint.position, slot.spawnPoint.rotation);
+        SkinnedMeshRenderer renderer = newPlant.GetComponent<SkinnedMeshRenderer>();
+        int colorIndex = (int)slot.selectedColor;
+        renderer.material = plantMaterials[colorIndex];
     }
 }
