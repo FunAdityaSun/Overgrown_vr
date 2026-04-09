@@ -4,9 +4,11 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Cube1
-  - Destroyable
   - Floor
+  - Pot
+  - Seedbag
+  - Watercan
+  - Soilbed
   layers:
   - Default
   - TransparentFX
