@@ -4333,7 +4333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02147999b26f98f42b5425b6dcff601b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeedBag
-  plantPrefab: {fileID: 919132149155446097, guid: 71ee01b3c6f66b64a991026e751e4719, type: 3}
+  plantPrefab: {fileID: 1447338680069441603, guid: 44812d67ac6979047a4c605e2c4bfba9, type: 3}
 --- !u!1001 &439632133
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5578,7 +5578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02147999b26f98f42b5425b6dcff601b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeedBag
-  plantPrefab: {fileID: 919132149155446097, guid: b46ac89c442e5e948bdf1c0e88dbdaf7, type: 3}
+  plantPrefab: {fileID: 8597505190793583776, guid: d2b4f7552d5b28e409e57dfc82b219c8, type: 3}
 --- !u!1001 &580841482
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7103,7 +7103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02147999b26f98f42b5425b6dcff601b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeedBag
-  plantPrefab: {fileID: 919132149155446097, guid: 71ee01b3c6f66b64a991026e751e4719, type: 3}
+  plantPrefab: {fileID: 1447338680069441603, guid: 44812d67ac6979047a4c605e2c4bfba9, type: 3}
 --- !u!4 &725165151 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 69990a5d3daddfd49a0f94ee20faf4fa, type: 3}
@@ -7778,6 +7778,10 @@ PrefabInstance:
       value: pot_004
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7e019440aec924e4998442614de45eb0, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7e019440aec924e4998442614de45eb0, type: 3}
       propertyPath: m_TagString
       value: Soilbed
       objectReference: {fileID: 0}
@@ -7791,6 +7795,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7e019440aec924e4998442614de45eb0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 791505898}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7e019440aec924e4998442614de45eb0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 791505899}
   m_SourcePrefab: {fileID: 100100000, guid: 7e019440aec924e4998442614de45eb0, type: 3}
 --- !u!4 &791505896 stripped
 Transform:
@@ -7814,6 +7821,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32e6e05e20aa6b844b245a0268ae9a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlantBed
+--- !u!114 &791505899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 791505897}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 4
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!4 &794704497 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e0a80a7d7537f4f4bb7795cba8cf993c, type: 3}
@@ -9288,7 +9313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02147999b26f98f42b5425b6dcff601b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeedBag
-  plantPrefab: {fileID: 919132149155446097, guid: 3e0fb1fe9fc77b34da4f8eff8abc975c, type: 3}
+  plantPrefab: {fileID: 1153604257994599025, guid: fce81ac3ea9bb0c4aa9432d38b15186e, type: 3}
 --- !u!1001 &957145881
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9672,7 +9697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02147999b26f98f42b5425b6dcff601b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeedBag
-  plantPrefab: {fileID: 919132149155446097, guid: 66afd22d54e55b1479726635dcad1517, type: 3}
+  plantPrefab: {fileID: 2268359157183034119, guid: 42527c3845fae9b448655535547fc7a8, type: 3}
 --- !u!1001 &979495406
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10001,7 +10026,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02147999b26f98f42b5425b6dcff601b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeedBag
-  plantPrefab: {fileID: 919132149155446097, guid: 3e0fb1fe9fc77b34da4f8eff8abc975c, type: 3}
+  plantPrefab: {fileID: 1153604257994599025, guid: fce81ac3ea9bb0c4aa9432d38b15186e, type: 3}
 --- !u!1 &980511704
 GameObject:
   m_ObjectHideFlags: 0
@@ -11044,7 +11069,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02147999b26f98f42b5425b6dcff601b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeedBag
-  plantPrefab: {fileID: 919132149155446097, guid: b46ac89c442e5e948bdf1c0e88dbdaf7, type: 3}
+  plantPrefab: {fileID: 8597505190793583776, guid: d2b4f7552d5b28e409e57dfc82b219c8, type: 3}
 --- !u!1001 &1042020997
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15034,6 +15059,10 @@ PrefabInstance:
       value: pot_big
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a0816021b18387f4788f9973591569ba, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a0816021b18387f4788f9973591569ba, type: 3}
       propertyPath: m_TagString
       value: Soilbed
       objectReference: {fileID: 0}
@@ -15053,6 +15082,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a0816021b18387f4788f9973591569ba, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1458119910}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a0816021b18387f4788f9973591569ba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1458119911}
   m_SourcePrefab: {fileID: 100100000, guid: a0816021b18387f4788f9973591569ba, type: 3}
 --- !u!4 &1458119908 stripped
 Transform:
@@ -15076,6 +15108,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32e6e05e20aa6b844b245a0268ae9a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlantBed
+--- !u!114 &1458119911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1458119909}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 4
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1001 &1458309926
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17676,6 +17726,10 @@ PrefabInstance:
       value: pot_005
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e48aa1a064b7bf14a953efd57b0f0906, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e48aa1a064b7bf14a953efd57b0f0906, type: 3}
       propertyPath: m_TagString
       value: Soilbed
       objectReference: {fileID: 0}
@@ -17692,6 +17746,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e48aa1a064b7bf14a953efd57b0f0906, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1750354137}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e48aa1a064b7bf14a953efd57b0f0906, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1750354138}
   m_SourcePrefab: {fileID: 100100000, guid: e48aa1a064b7bf14a953efd57b0f0906, type: 3}
 --- !u!4 &1750354135 stripped
 Transform:
@@ -17715,6 +17772,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32e6e05e20aa6b844b245a0268ae9a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlantBed
+--- !u!114 &1750354138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1750354136}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 4
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1001 &1762380828
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18189,7 +18264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02147999b26f98f42b5425b6dcff601b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeedBag
-  plantPrefab: {fileID: 919132149155446097, guid: 66afd22d54e55b1479726635dcad1517, type: 3}
+  plantPrefab: {fileID: 2268359157183034119, guid: 42527c3845fae9b448655535547fc7a8, type: 3}
 --- !u!1001 &1800475836
 PrefabInstance:
   m_ObjectHideFlags: 0

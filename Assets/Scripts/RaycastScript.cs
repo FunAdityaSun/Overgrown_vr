@@ -99,6 +99,18 @@ public class RaycastScript : MonoBehaviour
                     }
                 }
             }
+            // If holing a pot and select a flower, put flower in pot
+            else if (isHoldingObject && hit.collider.CompareTag("Flower"))
+            {
+                if (hit.collider.CompareTag("Flower"))
+                {
+                    Debug.Log("Picked flower!");
+                    GameObject flower = hit.collider.gameObject;
+                    flower.transform.SetParent(interactableObject.transform);
+                    flower.transform.localPosition = Vector3.zero;
+                    return;
+                }
+            }
         }
 
         // Pickup or drop object after trigger button is held for a certain amount of time
@@ -120,7 +132,11 @@ public class RaycastScript : MonoBehaviour
                     interactableObject = hit.collider.gameObject;
                     interactableObject.transform.SetParent(transform);
                     interactableObject.GetComponent<Rigidbody>().isKinematic = true;
-                    interactableObject.transform.localPosition = new Vector3(0, 0f, 1f);
+                    interactableObject.transform.localPosition = new Vector3(0.5f, -0.3f, 1f);
+                    if (interactableObject.CompareTag("Pot"))
+                    {
+                        interactableObject.transform.localRotation = Quaternion.Euler(-90, 0, 0);
+                    }
                     isHoldingObject = true;
                 }
 
