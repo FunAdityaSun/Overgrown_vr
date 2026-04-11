@@ -96,7 +96,7 @@ public class RaycastScript : NetworkBehaviour
             {
                 if (isHoldingObject)
                 {
-                    RPC_DropHeldItem();
+                    RPC_DropHeldItem(heldObject);
                 }
                 else if (hit.collider.CompareTag("Pot") || hit.collider.CompareTag("Watercan") || hit.collider.CompareTag("Seedbag"))
                 {
@@ -181,14 +181,20 @@ public class RaycastScript : NetworkBehaviour
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
     void RPC_PickupItem(NetworkObject obj)
     {
-        heldObject = obj;
+        if (HasStateAuthority)
+        {
+            heldObject = obj;
+        }
         heldObject.transform.SetParent(transform);
         heldObject.GetComponent<Rigidbody>().isKinematic = true;
         heldObject.transform.localPosition = targetPosition;
-        heldObject.transform.localRotation = Quaternion.Euler(-120, 0, -45);
-        if (heldObject.CompareTag("Watercan"))
+        if (heldObject.CompareTag("Pot"))
         {
-            heldObject.transform.localRotation = Quaternion.Euler(-150, 0, -45);
+            heldObject.transform.localRotation = Quaternion.Euler(-120, 0, -45);
+        }
+        else if (heldObject.CompareTag("Watercan"))
+        {
+            heldObject.transform.localRotation = Quaternion.Euler(-130, 0, -90);
         }
         else if (heldObject.CompareTag("Seedbag"))
         {
@@ -210,12 +216,20 @@ public class RaycastScript : NetworkBehaviour
 
 
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
-    void RPC_DropHeldItem()
+    void RPC_DropHeldItem(NetworkObject objToDrop)
     {
-        heldObject.transform.SetParent(null);
-        heldObject.GetComponent<Rigidbody>().isKinematic = false;
+        if (objToDrop != null)
+        {
+            objToDrop.transform.SetParent(null);
+            objToDrop.GetComponent<Rigidbody>().isKinematic = false;
+        }
+        //heldObject.transform.SetParent(null);
+        //heldObject.GetComponent<Rigidbody>().isKinematic = false;
         isHoldingObject = false;
-        heldObject = null;
+        if (HasStateAuthority)
+        {
+            heldObject = null;
+        }
     }
 
     void FixedUpdate()
@@ -417,7 +431,7 @@ public class RaycastScript : NetworkBehaviour
             seedBag.use();
             if (seedBag.uses <= 0)
             {
-                RPC_DropHeldItem();
+                RPC_DropHeldItem(heldObject);
             }
             return;
         }
