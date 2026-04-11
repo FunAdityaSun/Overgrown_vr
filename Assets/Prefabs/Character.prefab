@@ -192,6 +192,10 @@ PrefabInstance:
       value: XRCardboardRig
       objectReference: {fileID: 0}
     - target: {fileID: 7287137020755404943, guid: 186741bf17cbb0e4fa3ef06daa1f190f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7287137020755404943, guid: 186741bf17cbb0e4fa3ef06daa1f190f, type: 3}
       propertyPath: m_ClearFlags
       value: 1
       objectReference: {fileID: 0}
@@ -239,6 +243,9 @@ MonoBehaviour:
   player: {fileID: 4576046545444964323}
   rayDistance: 20
   systemControlCanvasPrefab: {fileID: 3241870209713163128, guid: 11e4340c7f4389f4d9254cb60377c55d, type: 3}
+  targetPosition: {x: 0.5, y: -0.3, z: 1}
+  requiredHoldTime: 0.5
+  interactionSounds: {fileID: 11400000, guid: 18d11d71fcbb72b45a7f2fac17615453, type: 2}
 --- !u!120 &8728593850567410657
 LineRenderer:
   serializedVersion: 3

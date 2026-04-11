@@ -17,12 +17,17 @@ public class CharacterMovement : NetworkBehaviour
     public override void Spawned()
     {
         charCntrl = GetComponent<CharacterController>();
+        if (HasStateAuthority && HasInputAuthority)
+        {
+            cameraObj.GetComponent<Camera>().enabled = true;
+            return;
+        }
     }
 
     // Update is called once per frame
     public override void FixedUpdateNetwork()
     {
-        if (HasStateAuthority==false)
+        if (HasStateAuthority==false || HasInputAuthority==false)
         {
             return;
         }

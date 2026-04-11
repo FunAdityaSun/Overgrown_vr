@@ -1,7 +1,6 @@
 using ExitGames.Client.Photon.StructWrapping;
 using Fusion;
 using System.Collections;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,6 +39,9 @@ public class RaycastScript : MonoBehaviour
     public Vector3 targetPosition = new Vector3(0.5f, -0.3f, 1f);
     public float requiredHoldTime = 0.5f;
     private float holdTimer = 0f;
+
+    [SerializeField]
+    private InteractionSounds interactionSounds;
 
 
     void Start()
@@ -97,6 +99,11 @@ public class RaycastScript : MonoBehaviour
                     {
                         heldObject.transform.localRotation = Quaternion.Euler(-150, 0, -45);
                     }
+                    else if (heldObject.CompareTag("Seedbag"))
+                    {
+                        AudioSystem.PlaySFXSpatial(interactionSounds.bagSFX, 1.0f, gameObject.transform);
+                    }
+
                     isHoldingObject = true;
                 }
 
@@ -136,6 +143,7 @@ public class RaycastScript : MonoBehaviour
                     Debug.Log("Planting seed...");
                     SeedBag seedBag = heldObject.GetComponent<SeedBag>();
                     bed.PlantSeed(seedBag.plantPrefab);
+                    AudioSystem.PlaySFXSpatial(interactionSounds.bagUseSFX, 1.0f, bed.gameObject.transform);
                     seedBag.use();
                     if (seedBag.uses <= 0)
                     {
