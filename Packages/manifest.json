@@ -6,6 +6,7 @@
     "com.unity.formats.fbx": "5.1.5",
     "com.unity.inputsystem": "1.17.0",
     "com.unity.multiplayer.center": "1.0.1",
+    "com.unity.multiplayer.playmode": "2.0.2",
     "com.unity.nuget.mono-cecil": "1.10.2",
     "com.unity.postprocessing": "3.5.4",
     "com.unity.timeline": "1.8.10",
