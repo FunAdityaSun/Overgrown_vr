@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RaycastScript : MonoBehaviour
+public class RaycastScript : NetworkBehaviour
 {
     private enum GameState
     {
@@ -34,7 +34,9 @@ public class RaycastScript : MonoBehaviour
     private GameObject currentUITarget;
 
     // Interaction parameters
-    private GameObject heldObject;
+    [Networked]
+    private NetworkObject heldObject { get; set; }
+
     private bool isHoldingObject = false;
     public Vector3 targetPosition = new Vector3(0.5f, -0.3f, 1f);
     public float requiredHoldTime = 0.5f;
@@ -46,6 +48,10 @@ public class RaycastScript : MonoBehaviour
 
     void Start()
     {
+        if (Runner != null && !(HasStateAuthority && HasInputAuthority))
+        {
+            return;
+        }
         systemControlCanvas = Instantiate(systemControlCanvasPrefab, gameObject.transform);
         systemControlIcons = systemControlCanvas.GetComponentsInChildren<Image>();
         lastOutline = null;
@@ -55,6 +61,10 @@ public class RaycastScript : MonoBehaviour
 
     void Update()
     {
+        if (Runner != null && !(HasStateAuthority && HasInputAuthority))
+        {
+            return;
+        }
         // If trigger button is pressed
         if ((Input.GetButtonUp("js0") || Input.GetKeyUp(KeyCode.R)) && holdTimer < requiredHoldTime && holdTimer > 0f)
         {
@@ -86,25 +96,11 @@ public class RaycastScript : MonoBehaviour
             {
                 if (isHoldingObject)
                 {
-                    DropHeldItem();
+                    RPC_DropHeldItem();
                 }
                 else if (hit.collider.CompareTag("Pot") || hit.collider.CompareTag("Watercan") || hit.collider.CompareTag("Seedbag"))
                 {
-                    heldObject = hit.collider.gameObject;
-                    heldObject.transform.SetParent(transform);
-                    heldObject.GetComponent<Rigidbody>().isKinematic = true;
-                    heldObject.transform.localPosition = targetPosition;
-                    heldObject.transform.localRotation = Quaternion.Euler(-120, 0, -45);
-                    if (heldObject.CompareTag("Watercan"))
-                    {
-                        heldObject.transform.localRotation = Quaternion.Euler(-150, 0, -45);
-                    }
-                    else if (heldObject.CompareTag("Seedbag"))
-                    {
-                        AudioSystem.PlaySFXSpatial(interactionSounds.bagSFX, 1.0f, gameObject.transform);
-                    }
-
-                    isHoldingObject = true;
+                    RPC_PickupItem(hit.collider.gameObject.GetComponent<NetworkObject>());
                 }
 
                 holdTimer = -1f;
@@ -138,49 +134,12 @@ public class RaycastScript : MonoBehaviour
             PlantBed bed = hit.collider.GetComponent<PlantBed>();
             if (heldObject.CompareTag("Seedbag"))
             {
-                if (bed.HasEmptySlot())
-                {
-                    Debug.Log("Planting seed...");
-                    SeedBag seedBag = heldObject.GetComponent<SeedBag>();
-                    bed.PlantSeed(seedBag.plantPrefab);
-                    AudioSystem.PlaySFXSpatial(interactionSounds.bagUseSFX, 1.0f, bed.gameObject.transform);
-                    seedBag.use();
-                    if (seedBag.uses <= 0)
-                    {
-                        DropHeldItem();
-                    }
-                    return;
-                }
-                else
-                {
-                    Debug.Log("No empty slots available in this bed!");
-                    return;
-                }
+                RPC_PlantSeed(bed);
             }
             // If holding a watering can, try to water the bed
             else if (heldObject.CompareTag("Watercan"))
             {
-                if (bed.NeedsWater())
-                {
-                    WaterCan waterCan = heldObject.GetComponent<WaterCan>();
-
-                    if (waterCan.uses > 0)
-                    {
-                        Debug.Log("Watering bed...");
-                        waterCan.Use();
-                        bed.WaterBed((WaterColor)(int)waterCan.selectedColor);
-                        return;
-                    }
-                    else
-                    {
-                        Debug.Log("Water can is empty...");
-                    }
-                }
-                else
-                {
-                    Debug.Log("This bed doesn't need water right now!");
-                    return;
-                }
+                RPC_WaterBed(bed);
             }
         }
         // If looking at flower
@@ -190,10 +149,7 @@ public class RaycastScript : MonoBehaviour
             if (heldObject.CompareTag("Pot"))
             {
                 Debug.Log("Picked flower!");
-                GameObject flower = hit.collider.gameObject;
-                flower.transform.SetParent(heldObject.transform);
-                flower.transform.localPosition = Vector3.zero;
-                return;
+                RPC_PickFlower(hit.collider.gameObject.GetComponent<NetworkObject>());               
             }
         }
         // If looking at dye sack
@@ -221,7 +177,40 @@ public class RaycastScript : MonoBehaviour
         }
     }
 
-    void DropHeldItem()
+    //This can be dropped, so if players arent theere at start it's cooked
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    void RPC_PickupItem(NetworkObject obj)
+    {
+        heldObject = obj;
+        heldObject.transform.SetParent(transform);
+        heldObject.GetComponent<Rigidbody>().isKinematic = true;
+        heldObject.transform.localPosition = targetPosition;
+        heldObject.transform.localRotation = Quaternion.Euler(-120, 0, -45);
+        if (heldObject.CompareTag("Watercan"))
+        {
+            heldObject.transform.localRotation = Quaternion.Euler(-150, 0, -45);
+        }
+        else if (heldObject.CompareTag("Seedbag"))
+        {
+            AudioSystem.PlaySFXSpatial(interactionSounds.bagSFX, .25f, gameObject.transform);
+        }
+        isHoldingObject = true;
+    }
+
+    
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    void RPC_PickFlower(NetworkObject obj)
+    {
+        GameObject flower = obj.gameObject;
+        flower.transform.SetParent(heldObject.transform);
+        flower.transform.localPosition = Vector3.zero;
+        return;
+    }
+
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    void RPC_DropHeldItem()
     {
         heldObject.transform.SetParent(null);
         heldObject.GetComponent<Rigidbody>().isKinematic = false;
@@ -231,6 +220,10 @@ public class RaycastScript : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (Runner != null && !(HasStateAuthority && HasInputAuthority))
+        {
+            return;
+        }
         Vector3 saberOrigin = transform.position + new Vector3(0, -0.5f, 0);
         Ray ray = new Ray(saberOrigin, transform.forward);
 
@@ -350,6 +343,10 @@ public class RaycastScript : MonoBehaviour
     // Handle system control menu navigation and selection
     void SystemControl()
     {
+        if (Runner != null && !(HasStateAuthority && HasInputAuthority))
+        {
+            return;
+        }
         ClearOutline();
         float joyY = Input.GetAxis("Vertical");
 
@@ -404,5 +401,63 @@ public class RaycastScript : MonoBehaviour
         if (player != null) player.GetComponent<CharacterMovement>().speed = freeze ? 0 : mvmtSpeed;
         if (lightSaber != null) lightSaber.enabled = !freeze;
     }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    void RPC_PlantSeed(PlantBed bed)
+    {
+        if (bed.HasEmptySlot())
+        {
+            Debug.Log("Planting seed...");
+            SeedBag seedBag = heldObject.GetComponent<SeedBag>();
+            if (HasStateAuthority && HasInputAuthority)
+            {
+                bed.RPC_PlantSeed(seedBag.plantPrefab);
+            }
+            AudioSystem.PlaySFXSpatial(interactionSounds.bagUseSFX, .2f, bed.gameObject.transform);
+            seedBag.use();
+            if (seedBag.uses <= 0)
+            {
+                RPC_DropHeldItem();
+            }
+            return;
+        }
+        else
+        {
+            Debug.Log("No empty slots available in this bed!");
+            return;
+        }
+    }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    void RPC_WaterBed(PlantBed bed)
+    {
+        if (bed.NeedsWater())
+        {
+            WaterCan waterCan = heldObject.GetComponent<WaterCan>();
+
+            if (waterCan.uses > 0)
+            {
+                Debug.Log("Watering bed...");
+                
+                waterCan.Use();
+                if (HasStateAuthority && HasInputAuthority)
+                {
+                    bed.RPC_WaterBed((WaterColor)(int)waterCan.selectedColor);
+                }
+                return;
+            }
+            else
+            {
+                Debug.Log("Water can is empty...");
+            }
+        }
+        else
+        {
+            Debug.Log("This bed doesn't need water right now!");
+            return;
+        }
+    }
+
+    
 
 }

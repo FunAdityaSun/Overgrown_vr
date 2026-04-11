@@ -1,9 +1,10 @@
 using UnityEngine;
 using System.Collections;
+using Fusion;
 
-public class SeedBag : MonoBehaviour
+public class SeedBag : NetworkBehaviour
 {
-    public GameObject plantPrefab;
+    public NetworkPrefabRef plantPrefab;
     public int uses = 3;
     public float shrinkAmt = 33f;
 

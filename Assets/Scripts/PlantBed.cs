@@ -1,16 +1,16 @@
+using Fusion;
 using UnityEngine;
 
 // Class to represent each individual planting slot in the plant bed
-public class PlantSlot
+public struct PlantSlot :INetworkStruct
 {
-    public Transform spawnPoint;
-    public bool isPlanted = false;
-    public bool isWatered = false;
-    public bool isGrown = false;
-    public GameObject assignedPrefab;
-    public float growthTimer = 5f;
+    public NetworkBool isPlanted;
+    public NetworkBool isWatered;
+    public NetworkBool isGrown;
+    public NetworkPrefabRef assignedPrefab;
+    public float growthTimer;
 
-    public WaterColor selectedColor = WaterColor.White;
+    public WaterColor selectedColor;
 }
 public enum WaterColor
 {
@@ -20,46 +20,34 @@ public enum WaterColor
     Blue = 3
 }
 
-public class PlantBed : MonoBehaviour
+public class PlantBed : NetworkBehaviour
 {
     public Material[] plantMaterials;
-    private PlantSlot[] plantSlots; 
+    public int numSlots;
+
+    [Networked, Capacity(8)]
+    private NetworkArray<PlantSlot> plantSlots => default; 
 
     void Start()
     {
         
     }
 
-    void Awake()
+    public override void FixedUpdateNetwork()
     {
-        InitializeSlots();
-    }
-
-    // Initialize the plant slots based on the child transforms of the plant bed
-    private void InitializeSlots()
-    {
-        int slotCount = transform.childCount;
-        plantSlots = new PlantSlot[slotCount];
-
-        for (int i = 0; i < slotCount; i++)
-        {
-            plantSlots[i] = new PlantSlot();
-            plantSlots[i].spawnPoint = transform.GetChild(i);
-        }
-    }
-
-    void FixedUpdate()
-    {
+        if (!HasStateAuthority) return;
         // Loop through every slot to check if it's currently growing
-        for (int i = 0; i < plantSlots.Length; i++)
+        for (int i = 0; i < numSlots; i++)
         {
             if (plantSlots[i].isWatered && !plantSlots[i].isGrown)
             {
-                plantSlots[i].growthTimer -= Time.deltaTime;
-
+                var slot = plantSlots[i];
+                slot.growthTimer -= Runner.DeltaTime;
+                plantSlots.Set(i, slot);
+                Debug.Log(plantSlots[i].growthTimer);
                 if (plantSlots[i].growthTimer <= 0)
                 {
-                    GrowPlant(plantSlots[i]);
+                    GrowPlant(plantSlots[i],i);
                 }
             }
         }
@@ -78,48 +66,57 @@ public class PlantBed : MonoBehaviour
     // Check if there is at least one planted seed that is waiting for water
     public bool NeedsWater()
     {
-        foreach (var slot in plantSlots)
+        for (int i = 0; i < numSlots; i++)
         {
+            var slot = plantSlots[i];
             if (slot.isPlanted && !slot.isWatered && !slot.isGrown) return true;
         }
         return false;
     }
 
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     // Plant a seed in the first available empty slot
-    public void PlantSeed(GameObject plantPrefab)
+    public void RPC_PlantSeed(NetworkPrefabRef plantPrefab)
     {
-        foreach (var slot in plantSlots)
+        for (int i = 0; i < numSlots; i++)
         {
+            var slot = plantSlots[i];
             if (!slot.isPlanted)
             {
                 slot.assignedPrefab = plantPrefab;
                 slot.isPlanted = true;
-                Debug.Log("Planted at: " + slot.spawnPoint.name);
+                slot.growthTimer = 5f;
+                plantSlots.Set(i, slot);
                 return;
             }
         }
     }
 
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     // Water all planted seeds that are currently waiting for water
-    public void WaterBed(WaterColor newColor)
+    public void RPC_WaterBed(WaterColor newColor)
     {
-        foreach (var slot in plantSlots)
+        for (int i = 0; i < numSlots; i++)
         {
+            var slot = plantSlots[i];
             if (slot.isPlanted && !slot.isWatered && !slot.isGrown)
             {
                 slot.isWatered = true;
                 slot.selectedColor = newColor;
+                plantSlots.Set(i, slot);
             }
         }
     }
 
     // Spawn the plant prefab at the designated spawn point
-    private void GrowPlant(PlantSlot slot)
+    private void GrowPlant(PlantSlot slot, int index)
     {
         slot.isGrown = true;
+        plantSlots.Set(index, slot);
 
         // keep a reference to the new plant so we can change color
-        GameObject newPlant = Instantiate(slot.assignedPrefab, slot.spawnPoint.position, slot.spawnPoint.rotation);
+        Transform temp = transform.GetChild(index);
+        NetworkObject newPlant = Runner.Spawn(slot.assignedPrefab, temp.position, temp.rotation);
         SkinnedMeshRenderer renderer = newPlant.GetComponent<SkinnedMeshRenderer>();
         int colorIndex = (int)slot.selectedColor;
         renderer.material = plantMaterials[colorIndex];
