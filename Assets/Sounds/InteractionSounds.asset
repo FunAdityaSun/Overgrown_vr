@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: InteractionSounds
   m_EditorClassIdentifier: Assembly-CSharp::InteractionSounds
   teleportSFX: {fileID: 0}
-  bagSFX: {fileID: 0}
+  bagSFX: {fileID: 8300000, guid: fea0881ef920bdd4b91c8b682fe3d89a, type: 3}
+  bagUseSFX: {fileID: 8300000, guid: 284879712d4fe0c4c9134dca1d2ae971, type: 3}
   potSFX: {fileID: 0}
   watercanPourSFX: {fileID: 0}
   watercanFillSFX: {fileID: 0}

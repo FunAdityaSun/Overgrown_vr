@@ -28590,6 +28590,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
+    - target: {fileID: 3542036709393996015, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4229000469986365546, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
       propertyPath: SortKey
       value: 419204008
