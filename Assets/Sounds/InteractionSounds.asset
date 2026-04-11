@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a022aea44b565a64886d767f63ffdcda, type: 3}
   m_Name: InteractionSounds
   m_EditorClassIdentifier: Assembly-CSharp::InteractionSounds
-  teleportSFX: {fileID: 0}
+  teleportSFX: {fileID: 8300000, guid: 985d4a59d4fb854418c79d2cafb2aaca, type: 3}
   bagSFX: {fileID: 8300000, guid: fea0881ef920bdd4b91c8b682fe3d89a, type: 3}
   bagUseSFX: {fileID: 8300000, guid: 284879712d4fe0c4c9134dca1d2ae971, type: 3}
-  potSFX: {fileID: 0}
-  watercanPourSFX: {fileID: 0}
-  watercanFillSFX: {fileID: 0}
-  watercanPickupSFX: {fileID: 0}
+  potSFX: {fileID: 8300000, guid: b9bbd593aaf4dc549a51b74e7c8ab098, type: 3}
+  watercanPourSFX: {fileID: 8300000, guid: eaf47f1ea20d6d144aa20a1816f40ce8, type: 3}
+  watercanFillSFX: {fileID: 8300000, guid: c9035ee8d282e4c429b011a948d6cd65, type: 3}
+  watercanPickupSFX: {fileID: 8300000, guid: 442035e9d17555e48907e2efcc201ad6, type: 3}

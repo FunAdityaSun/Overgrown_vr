@@ -173,6 +173,7 @@ public class RaycastScript : NetworkBehaviour
                 WaterCan waterCan = heldObject.GetComponent<WaterCan>();
                 Debug.Log("Refilled Water!");
                 waterCan.Fill(3);
+                AudioSystem.PlaySFXSpatial(interactionSounds.watercanFillSFX, .4f, gameObject.transform);
             }
         }
         // If looking at NPC
@@ -214,10 +215,12 @@ public class RaycastScript : NetworkBehaviour
         if (heldObject.CompareTag("Pot"))
         {
             heldObject.transform.localRotation = Quaternion.Euler(-120, 0, -45);
+            AudioSystem.PlaySFXSpatial(interactionSounds.potSFX, .5f, gameObject.transform);
         }
         else if (heldObject.CompareTag("Watercan"))
         {
             heldObject.transform.localRotation = Quaternion.Euler(-130, 0, -90);
+            AudioSystem.PlaySFXSpatial(interactionSounds.watercanPickupSFX, .3f, gameObject.transform);
         }
         else if (heldObject.CompareTag("Seedbag"))
         {
@@ -234,6 +237,7 @@ public class RaycastScript : NetworkBehaviour
         GameObject flower = obj.gameObject;
         flower.transform.SetParent(heldObject.transform);
         flower.transform.localPosition = Vector3.zero;
+        AudioSystem.PlaySFXSpatial(interactionSounds.potSFX, .5f, gameObject.transform);
         return;
     }
 
@@ -365,10 +369,12 @@ public class RaycastScript : NetworkBehaviour
         if (networkTransform != null)
         {
             networkTransform.Teleport(targetPosition);
+            AudioSystem.PlaySFXSpatial(interactionSounds.teleportSFX, .5f, gameObject.transform);
         }
         else // Single player fallback
         {
             player.position = targetPosition;
+            AudioSystem.PlaySFXSpatial(interactionSounds.teleportSFX, .5f, gameObject.transform);
         }
 
         if (cc != null)
@@ -481,6 +487,7 @@ public class RaycastScript : NetworkBehaviour
                 {
                     bed.RPC_WaterBed((WaterColor)(int)waterCan.selectedColor);
                 }
+                AudioSystem.PlaySFXSpatial(interactionSounds.watercanPourSFX, .5f, bed.gameObject.transform);
                 return;
             }
             else
