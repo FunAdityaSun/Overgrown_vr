@@ -12,6 +12,7 @@ TagManager:
   - Flower
   - Well
   - Dye
+  - NPC
   layers:
   - Default
   - TransparentFX

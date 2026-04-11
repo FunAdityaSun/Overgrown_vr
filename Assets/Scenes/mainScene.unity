@@ -5588,9 +5588,11 @@ GameObject:
   - component: {fileID: 506619142}
   - component: {fileID: 506619141}
   - component: {fileID: 506619145}
-  m_Layer: 0
+  - component: {fileID: 506619146}
+  - component: {fileID: 506619147}
+  m_Layer: 7
   m_Name: Npc_temp
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5751,7 +5753,47 @@ MonoBehaviour:
     flowerSprite: {fileID: 21300000, guid: 02c00a2917f0ce446bfc860a780e696b, type: 3}
   - flowerId: yellow_tulip
     flowerSprite: {fileID: 21300000, guid: 69dc500b8e9cfd442ad0c32dcb4efa2b, type: 3}
-  isWaitingForOrder: 0
+  _IsOrderReady:
+    _value: 0
+  _NetworkedPotIndex: 0
+  _NetworkedFlowerIndex: 0
+--- !u!114 &506619146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 506619140}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &506619147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 506619140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkObject
+  SortKey: 3369865433
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 506619145}
+  ForceRemoteRenderTimeframe: 0
 --- !u!4 &512632957 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e0a80a7d7537f4f4bb7795cba8cf993c, type: 3}

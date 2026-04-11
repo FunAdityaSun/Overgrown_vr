@@ -175,6 +175,29 @@ public class RaycastScript : NetworkBehaviour
                 waterCan.Fill(3);
             }
         }
+        // If looking at NPC
+        else if (hit.collider.CompareTag("NPC"))
+        {
+            if (heldObject.CompareTag("Pot"))
+            {
+                Debug.Log("Gave item to NPC!");
+                RPC_GiveItemToNPC(hit.collider.gameObject.GetComponent<NetworkObject>(), heldObject);
+            }
+        }
+    }
+
+    // Handles giving currently held item to NPC, rn only gives pots
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    void RPC_GiveItemToNPC(NetworkObject npc, NetworkObject item)
+    {
+        CustomerNPC customer = npc.GetComponent<CustomerNPC>();
+        if (customer != null)
+        {
+            customer.ReceiveItem(item.gameObject);
+            item.transform.SetParent(null);
+            item.gameObject.SetActive(false);
+            isHoldingObject = false;
+        }
     }
 
     //This can be dropped, so if players arent theere at start it's cooked
