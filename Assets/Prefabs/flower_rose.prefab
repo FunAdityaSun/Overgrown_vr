@@ -78,7 +78,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 66afd22d54e55b1479726635dcad1517, type: 3}
       propertyPath: m_Name
-      value: white_rose
+      value: flower_rose
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 66afd22d54e55b1479726635dcad1517, type: 3}
       propertyPath: m_Layer
@@ -105,6 +105,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 66afd22d54e55b1479726635dcad1517, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5308460121682886735}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 66afd22d54e55b1479726635dcad1517, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -1188121133613180562}
   m_SourcePrefab: {fileID: 100100000, guid: 66afd22d54e55b1479726635dcad1517, type: 3}
 --- !u!1 &2268359157183034119 stripped
 GameObject:
@@ -147,6 +150,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 5308460121682886735}
+  - {fileID: -1188121133613180562}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &5308460121682886735
 MonoBehaviour:
@@ -165,3 +169,20 @@ MonoBehaviour:
   SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
+--- !u!114 &-1188121133613180562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2268359157183034119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d5258a738378c4ba19f63b82cfdb37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  flowerMaterials:
+  - {fileID: 2100000, guid: 631b9d1c61ce12d4eb00a7f4e1bb1bdb, type: 2}
+  - {fileID: 2100000, guid: ab6e5e40cb97bdc45a9de26f614dafc0, type: 2}
+  - {fileID: 2100000, guid: 0235c26cad2f5d4478dfb1b44048a36f, type: 2}
+  - {fileID: 2100000, guid: 0ac21e9bc0e30d4468371a3a40dab5c5, type: 2}

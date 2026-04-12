@@ -235,8 +235,11 @@ public class RaycastScript : NetworkBehaviour
     void RPC_PickFlower(NetworkObject obj)
     {
         GameObject flower = obj.gameObject;
+        NetworkTransform nt = flower.GetComponent<NetworkTransform>();
         flower.transform.SetParent(heldObject.transform);
         flower.transform.localPosition = Vector3.zero;
+        flower.transform.localRotation = Quaternion.identity;
+        nt.Teleport(flower.transform.position, flower.transform.rotation);
         AudioSystem.PlaySFXSpatial(interactionSounds.potSFX, .5f, gameObject.transform);
         return;
     }
@@ -501,7 +504,4 @@ public class RaycastScript : NetworkBehaviour
             return;
         }
     }
-
-    
-
 }

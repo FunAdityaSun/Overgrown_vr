@@ -94,7 +94,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 0ac21e9bc0e30d4468371a3a40dab5c5, type: 2}
     - target: {fileID: 919132149155446097, guid: 3e0fb1fe9fc77b34da4f8eff8abc975c, type: 3}
       propertyPath: m_Name
-      value: white_lily
+      value: flower_lily
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3e0fb1fe9fc77b34da4f8eff8abc975c, type: 3}
       propertyPath: m_Layer
@@ -121,6 +121,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3e0fb1fe9fc77b34da4f8eff8abc975c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8567766359231587816}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3e0fb1fe9fc77b34da4f8eff8abc975c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1112893064439595316}
   m_SourcePrefab: {fileID: 100100000, guid: 3e0fb1fe9fc77b34da4f8eff8abc975c, type: 3}
 --- !u!1 &1153604257994599025 stripped
 GameObject:
@@ -163,6 +166,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 8567766359231587816}
+  - {fileID: 1112893064439595316}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &8567766359231587816
 MonoBehaviour:
@@ -181,3 +185,20 @@ MonoBehaviour:
   SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
+--- !u!114 &1112893064439595316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153604257994599025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d5258a738378c4ba19f63b82cfdb37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  flowerMaterials:
+  - {fileID: 2100000, guid: 631b9d1c61ce12d4eb00a7f4e1bb1bdb, type: 2}
+  - {fileID: 2100000, guid: ab6e5e40cb97bdc45a9de26f614dafc0, type: 2}
+  - {fileID: 2100000, guid: 0235c26cad2f5d4478dfb1b44048a36f, type: 2}
+  - {fileID: 2100000, guid: 0ac21e9bc0e30d4468371a3a40dab5c5, type: 2}
