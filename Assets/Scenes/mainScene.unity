@@ -5707,7 +5707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5637c9d9d420b154892fce17ccbea317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerNPC
-  thinkTime: 3
+  thinkTime: 10
   speechBubbleCanvas: {fileID: 248629850}
   desiredPotImage: {fileID: 1720818700}
   desiredFlowerImage: {fileID: 1839030671}

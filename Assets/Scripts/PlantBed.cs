@@ -114,11 +114,10 @@ public class PlantBed : NetworkBehaviour
         slot.isGrown = true;
         plantSlots.Set(index, slot);
 
-        // keep a reference to the new plant so we can change color
         Transform temp = transform.GetChild(index);
         NetworkObject newPlant = Runner.Spawn(slot.assignedPrefab, temp.position, temp.rotation);
-        SkinnedMeshRenderer renderer = newPlant.GetComponent<SkinnedMeshRenderer>();
+        Flower flower = newPlant.GetComponent<Flower>();
         int colorIndex = (int)slot.selectedColor;
-        renderer.material = plantMaterials[colorIndex];
+        flower.SetFlowerColor(colorIndex);
     }
 }
