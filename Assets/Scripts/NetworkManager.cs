@@ -17,6 +17,8 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public NetworkRunner Runner { get; private set; }
 
+    public NetworkObject playerPrefab;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -41,7 +43,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         //Create Runner
         CreateRunner();
         //Load Scene
-        await LoadScene();
+        //await LoadScene();
         //ConnectSession
         await Connect(roomCode);
     }
@@ -51,7 +53,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         //Create Runner
         CreateRunner();
         //Load Scene
-        await LoadScene();
+        //await LoadScene();
         //ConnectSession
         await Connect(roomCode);
     }
@@ -160,8 +162,35 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
     }
 
+    // This is called on all clients when a scene load is completed
     public void OnSceneLoadDone(NetworkRunner runner)
     {
+        int currentSceneIndex = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
+
+        if (currentSceneIndex == 2)
+        {
+            Debug.Log("Main Game Scene Loaded! Spawning player objects...");
+            Vector3 spawnPosition = new Vector3(0, 2, -28);
+            Vector3 safeSpawnPosition = GetSafeSpawnPosition(spawnPosition, 5f, 1f);
+            runner.Spawn(playerPrefab, safeSpawnPosition, Quaternion.identity, runner.LocalPlayer); 
+        }
+    }
+
+    // Utility method to find a safe spawn position around a spawn point
+    private Vector3 GetSafeSpawnPosition(Vector3 center, float spawnRadius, float playerRadius)
+    {
+        int maxAttempts = 10;
+        for (int i = 0; i < maxAttempts; i++)
+        {
+            float randomX = UnityEngine.Random.Range(-spawnRadius, spawnRadius);
+            float randomZ = UnityEngine.Random.Range(-spawnRadius, spawnRadius);
+            Vector3 randomPosition = center + new Vector3(randomX, 2, randomZ);
+            if (!Physics.CheckSphere(randomPosition, playerRadius))
+            {
+                return randomPosition;
+            }
+        }
+        return center;
     }
 
     public void OnSceneLoadStart(NetworkRunner runner)

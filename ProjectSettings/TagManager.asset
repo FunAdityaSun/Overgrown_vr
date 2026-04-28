@@ -13,6 +13,7 @@ TagManager:
   - Well
   - Dye
   - NPC
+  - ReadyButton
   layers:
   - Default
   - TransparentFX

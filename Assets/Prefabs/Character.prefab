@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8276117986701189280}
   - component: {fileID: 4229000469986365546}
   - component: {fileID: -3133135785802461695}
+  - component: {fileID: -6011812001675237549}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -118,6 +119,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 9039205698269674594}
   - {fileID: -3133135785802461695}
+  - {fileID: -6011812001675237549}
   - {fileID: 4485881998384435807}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &-3133135785802461695
@@ -137,6 +139,20 @@ MonoBehaviour:
   SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
+--- !u!114 &-6011812001675237549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2571153171339265014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85423cbd71b78b449b78edcf09446324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerReadyState
+  _IsPlayerReady:
+    _value: 0
 --- !u!1 &5777830405096308824
 GameObject:
   m_ObjectHideFlags: 0

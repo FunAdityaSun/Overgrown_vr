@@ -6717,6 +6717,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NetworkManager
   _runnerPrefab: {fileID: 2339386465236760326, guid: 6beb8f58cb2e1db42a307003aa729c46, type: 3}
+  playerPrefab: {fileID: 4229000469986365546, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
 --- !u!4 &545217737
 Transform:
   m_ObjectHideFlags: 0

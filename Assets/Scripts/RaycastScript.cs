@@ -45,6 +45,12 @@ public class RaycastScript : NetworkBehaviour
     [SerializeField]
     private InteractionSounds interactionSounds;
 
+    private PlayerReadyState playerReadyState;
+
+    public override void Spawned()
+    {
+        playerReadyState = transform.root.GetComponent<PlayerReadyState>();
+    }
 
     void Start()
     {
@@ -72,6 +78,13 @@ public class RaycastScript : NetworkBehaviour
             if (hit.collider.CompareTag("Floor"))
             {
                 TeleportPlayer(new Vector3(hit.point.x, player.position.y + 0.2f, hit.point.z));
+            }
+            else if (hit.collider.CompareTag("ReadyButton"))
+            {
+                if (playerReadyState != null)
+                {
+                    playerReadyState.SetReady();
+                }
             }
             // Interact with UI buttons
             else if (currentUITarget != null && currentUITarget.GetComponent<UnityEngine.UI.Button>())
@@ -278,31 +291,15 @@ public class RaycastScript : NetworkBehaviour
 
         UnityEngine.Debug.DrawRay(saberOrigin, transform.forward * rayDistance, Color.red);
 
+        GameObject newUITarget = null;
+
         int cominedLayerMask = LayerMask.GetMask("UI", "Interactable", "Floor", "Default");
         if (Physics.Raycast(ray, out hit, rayDistance, cominedLayerMask))
         {
             // Handle UI interactions
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("UI"))
             {
-                if (currentUITarget != hit.transform.gameObject)
-                {
-                    UnityEngine.UI.Image background;
-                    if (currentUITarget != null)
-                    {
-                        background = currentUITarget.GetComponent<UnityEngine.UI.Image>();
-                        if (background != null)
-                        {
-                            background.color = Color.white;
-                        }
-                    }
-                    currentUITarget = hit.transform.gameObject;
-
-                    background = currentUITarget.GetComponent<UnityEngine.UI.Image>();
-                    if (background != null)
-                    {
-                        background.color = Color.yellow;
-                    }
-                }
+                newUITarget = hit.transform.gameObject;
             }
             // Handle interactable objects
             else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Interactable"))
@@ -336,6 +333,30 @@ public class RaycastScript : NetworkBehaviour
         else
         {
             ClearOutline();
+        }
+
+        // Update UI target and button highlight if changed
+        if (currentUITarget != newUITarget)
+        {
+            UnityEngine.UI.Image background;
+            if (currentUITarget != null)
+            {
+                background = currentUITarget.GetComponent<UnityEngine.UI.Image>();
+                if (background != null)
+                {
+                    background.color = Color.white;
+                }
+            }
+
+            if (newUITarget != null)
+            {
+                background = newUITarget.GetComponent<UnityEngine.UI.Image>();
+                if (background != null)
+                {
+                    background.color = Color.yellow;
+                }
+            }
+            currentUITarget = newUITarget;
         }
 
         // Position system control canvas in front of player when menu is open
