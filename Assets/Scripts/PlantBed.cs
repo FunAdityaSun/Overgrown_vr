@@ -1,69 +1,107 @@
 using Fusion;
 using UnityEngine;
+using System.Collections.Generic;
 
-// Class to represent each individual planting slot in the plant bed
-public struct PlantSlot :INetworkStruct
+public struct PlantSlot : INetworkStruct
 {
     public NetworkBool isPlanted;
     public NetworkBool isWatered;
     public NetworkBool isGrown;
     public NetworkPrefabRef assignedPrefab;
     public float growthTimer;
-
     public WaterColor selectedColor;
 }
-public enum WaterColor
-{
-    White = 0,
-    Red = 1,
-    Yellow = 2,
-    Blue = 3
-}
+
+public enum WaterColor { White = 0, Red = 1, Yellow = 2, Blue = 3 }
 
 public class PlantBed : NetworkBehaviour
 {
     public Material[] plantMaterials;
-    public int numSlots;
+
+    private int numSlots;
+    private ParticleSystem[] slotParticles;
 
     [Networked, Capacity(8)]
-    private NetworkArray<PlantSlot> plantSlots => default; 
+    private NetworkArray<PlantSlot> plantSlots => default;
 
-    void Start()
+    private ChangeDetector _changeDetector;
+
+    public override void Spawned()
     {
-        
+        _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
+
+        // get slots automatically from children
+        numSlots = transform.childCount;
+        slotParticles = new ParticleSystem[numSlots];
+
+        for (int i = 0; i < numSlots; i++)
+        {
+            Transform slot = transform.GetChild(i);
+            slotParticles[i] = slot.GetComponentInChildren<ParticleSystem>();
+            slotParticles[i].Stop();
+        }
+    }
+
+    public override void Render()
+    {
+        foreach (var change in _changeDetector.DetectChanges(this))
+        {
+            if (change == nameof(plantSlots))
+            {
+                UpdateParticles();
+            }
+        }
+    }
+
+    private void UpdateParticles()
+    {
+        for (int i = 0; i < numSlots; i++)
+        {
+            if (slotParticles[i] == null) continue;
+
+            if (plantSlots[i].isWatered && !plantSlots[i].isGrown)
+            {
+                if (!slotParticles[i].isPlaying) slotParticles[i].Play();
+            }
+            else
+            {
+                if (slotParticles[i].isPlaying) slotParticles[i].Stop();
+            }
+        }
     }
 
     public override void FixedUpdateNetwork()
     {
         if (!HasStateAuthority) return;
-        // Loop through every slot to check if it's currently growing
+
         for (int i = 0; i < numSlots; i++)
         {
-            if (plantSlots[i].isWatered && !plantSlots[i].isGrown)
+            var slot = plantSlots[i];
+            if (slot.isWatered && !slot.isGrown)
             {
-                var slot = plantSlots[i];
                 slot.growthTimer -= Runner.DeltaTime;
-                plantSlots.Set(i, slot);
-                Debug.Log(plantSlots[i].growthTimer);
-                if (plantSlots[i].growthTimer <= 0)
+
+                if (slot.growthTimer <= 0)
                 {
-                    GrowPlant(plantSlots[i],i);
+                    GrowPlant(slot, i);
+                }
+                else
+                {
+                    plantSlots.Set(i, slot);
                 }
             }
         }
     }
 
-    // Check if there is at least one empty slot available for planting
     public bool HasEmptySlot()
     {
-        foreach (var slot in plantSlots)
+        for (int i = 0; i < numSlots; i++)
         {
-            if (!slot.isPlanted) return true;
+            if (!plantSlots[i].isPlanted) return true;
         }
         return false;
     }
 
-    // Check if there is at least one planted seed that is waiting for water
     public bool NeedsWater()
     {
         for (int i = 0; i < numSlots; i++)
@@ -75,7 +113,6 @@ public class PlantBed : NetworkBehaviour
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    // Plant a seed in the first available empty slot
     public void RPC_PlantSeed(NetworkPrefabRef plantPrefab)
     {
         for (int i = 0; i < numSlots; i++)
@@ -85,6 +122,8 @@ public class PlantBed : NetworkBehaviour
             {
                 slot.assignedPrefab = plantPrefab;
                 slot.isPlanted = true;
+                slot.isWatered = false;
+                slot.isGrown = false;
                 slot.growthTimer = 5f;
                 plantSlots.Set(i, slot);
                 return;
@@ -93,7 +132,6 @@ public class PlantBed : NetworkBehaviour
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    // Water all planted seeds that are currently waiting for water
     public void RPC_WaterBed(WaterColor newColor)
     {
         for (int i = 0; i < numSlots; i++)
@@ -108,16 +146,30 @@ public class PlantBed : NetworkBehaviour
         }
     }
 
-    // Spawn the plant prefab at the designated spawn point
     private void GrowPlant(PlantSlot slot, int index)
     {
         slot.isGrown = true;
+        slot.isWatered = false;
         plantSlots.Set(index, slot);
 
-        Transform temp = transform.GetChild(index);
-        NetworkObject newPlant = Runner.Spawn(slot.assignedPrefab, temp.position, temp.rotation);
-        Flower flower = newPlant.GetComponent<Flower>();
-        int colorIndex = (int)slot.selectedColor;
-        flower.SetFlowerColor(colorIndex);
+        Transform spawnPoint = transform.GetChild(index);
+        NetworkObject newPlant = Runner.Spawn(slot.assignedPrefab, spawnPoint.position, spawnPoint.rotation);
+
+        if (newPlant.TryGetComponent<Flower>(out var flower))
+        {
+            flower.SetFlowerColor((int)slot.selectedColor);
+            flower.ParentBed = this;
+            flower.SlotIndex = index;
+        }
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_ClearSlot(int index)
+    {
+        var slot = plantSlots[index];
+        slot.isPlanted = false;
+        slot.isWatered = false;
+        slot.isGrown = false;
+        plantSlots.Set(index, slot);
     }
 }

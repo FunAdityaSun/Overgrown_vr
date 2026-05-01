@@ -158,11 +158,15 @@ public class RaycastScript : NetworkBehaviour
         // If looking at flower
         else if (hit.collider.CompareTag("Flower"))
         {
-            // if holing a pot, put flower in pot
+            // if holing a pot, put flower in pot & reset bed
             if (heldObject.CompareTag("Pot"))
             {
-                Debug.Log("Picked flower!");
-                RPC_PickFlower(hit.collider.gameObject.GetComponent<NetworkObject>());               
+                Flower flower = hit.collider.gameObject.GetComponent<Flower>();
+                if (flower != null)
+                {
+                    flower.ParentBed.RPC_ClearSlot(flower.SlotIndex);
+                    RPC_PickFlower(flower.Object);
+                }
             }
         }
         // If looking at dye sack
@@ -359,12 +363,11 @@ public class RaycastScript : NetworkBehaviour
             currentUITarget = newUITarget;
         }
 
-        // Position system control canvas in front of player when menu is open
+        // Fixed transform so it clip less in the ground
         if (currentState == GameState.SystemControl)
         {
-            systemControlCanvas.transform.position = transform.position + transform.forward * 5f;
-            systemControlCanvas.transform.LookAt(player);
-            systemControlCanvas.transform.Rotate(0, 180, 0);
+            systemControlCanvas.transform.position = transform.position + transform.forward * 0.25f; 
+            systemControlCanvas.transform.rotation = this.transform.rotation;
             systemControlCanvas.SetActive(true);
         }
     }

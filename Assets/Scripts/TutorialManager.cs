@@ -13,11 +13,9 @@ public class TutorialManager : NetworkBehaviour
     {
         if (!Runner.IsSharedModeMasterClient || _isTransitioning) return;
 
-        //Make sure that at least 2 players are in the room before checking
-        //if (Runner.ActivePlayers.Count() < 2) return;
-
         // Check if all players are ready, if so, switch to main scene
-        PlayerReadyState[] allPlayers = FindObjectsOfType<PlayerReadyState>();
+        PlayerReadyState[] allPlayers = FindObjectsByType<PlayerReadyState>(FindObjectsSortMode.None);
+
         if (allPlayers.Length != Runner.ActivePlayers.Count()) return;
 
         bool everyoneReady = true;

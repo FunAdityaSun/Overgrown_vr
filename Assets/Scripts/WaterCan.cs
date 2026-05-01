@@ -1,10 +1,9 @@
-using System;
-using System.Collections;
+using Fusion;
 using UnityEngine;
+using System.Collections;
 
-public class WaterCan : MonoBehaviour
+public class WaterCan : NetworkBehaviour
 {
-    // Define the Enum for your colors
     public enum WaterColor
     {
         White = 0,
@@ -12,48 +11,75 @@ public class WaterCan : MonoBehaviour
         Yellow = 2,
         Blue = 3
     }
-    public WaterColor selectedColor = WaterColor.White;
-    public int uses = 3;
 
+    [Networked, OnChangedRender(nameof(OnColorChanged))]
+    public WaterColor selectedColor { get; set; }
+
+    [Networked, OnChangedRender(nameof(OnUsesChanged))]
+    public int uses { get; set; }
 
     private SkinnedMeshRenderer meshRenderer;
-    private float waterPerUse;
+    private Coroutine activeAnimation;
 
-    void Start()
+    public override void Spawned()
     {
-        waterPerUse = 100f / uses;
-        uses = 0;
-
         meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
-        meshRenderer.SetBlendShapeWeight((int)selectedColor, 0);
+        RefreshVisuals();
     }
 
     public void Use()
     {
         uses--;
-        int blendIndex = (int)selectedColor;
-        float currentWeight = meshRenderer.GetBlendShapeWeight(blendIndex);
-        float targetWeight = currentWeight - waterPerUse;
-        StartCoroutine(Animate(blendIndex, currentWeight, targetWeight));
     }
 
     public void Fill(int newUses)
     {
-        meshRenderer.SetBlendShapeWeight(0, 0);
-        meshRenderer.SetBlendShapeWeight(1, 0);
-        meshRenderer.SetBlendShapeWeight(2, 0);
-        meshRenderer.SetBlendShapeWeight(3, 0);
-
-        uses = newUses;
-        int blendIndex = (int)selectedColor;
-        float currentWeight = meshRenderer.GetBlendShapeWeight(blendIndex);
-        float targetWeight = 100f * (newUses / 3f);
-        StartCoroutine(Animate(blendIndex, currentWeight, targetWeight));
+        RPC_SetFill(newUses);
     }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_SetFill(int newUses)
+    {
+        uses = newUses;
+    }
+
     public void Change(WaterColor newColor)
     {
+        RPC_Change(newColor);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_Change(WaterColor newColor)
+    {
         selectedColor = newColor;
-        Fill(uses); // dont change water level
+        Fill(uses);
+    }
+
+    void OnUsesChanged()
+    {
+        int blendIndex = (int)selectedColor;
+        float currentWeight = meshRenderer.GetBlendShapeWeight(blendIndex);
+        float targetWeight = (uses / 3f) * 100f;
+
+        if (activeAnimation != null) StopCoroutine(activeAnimation);
+        activeAnimation = StartCoroutine(Animate(blendIndex, currentWeight, targetWeight));
+    }
+    void OnColorChanged()
+    {
+        RefreshVisuals();
+    }
+
+    private void RefreshVisuals()
+    {
+        if (meshRenderer == null) return;
+
+        for (int i = 0; i < 4; i++)
+        {
+            meshRenderer.SetBlendShapeWeight(i, 0);
+        }
+
+        float targetWeight = (uses / 3f) * 100f;
+        meshRenderer.SetBlendShapeWeight((int)selectedColor, targetWeight);
     }
 
     IEnumerator Animate(int index, float start, float end)
@@ -70,10 +96,5 @@ public class WaterCan : MonoBehaviour
         }
 
         meshRenderer.SetBlendShapeWeight(index, end);
-
-        if (uses <= 0)
-        {
-            Debug.Log($"{selectedColor} water is empty!");
-        }
     }
 }

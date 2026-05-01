@@ -349,7 +349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RaycastScript
   player: {fileID: 4576046545444964323}
-  rayDistance: 20
+  rayDistance: 10
   systemControlCanvasPrefab: {fileID: 3241870209713163128, guid: 11e4340c7f4389f4d9254cb60377c55d, type: 3}
   targetPosition: {x: 0.5, y: -0.3, z: 1}
   requiredHoldTime: 0.5

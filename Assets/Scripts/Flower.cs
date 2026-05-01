@@ -4,6 +4,8 @@ using UnityEngine;
 public class Flower : NetworkBehaviour
 {
     [Networked] private int selectedColor { get; set; }
+    [Networked] public PlantBed ParentBed { get; set; }
+    [Networked] public int SlotIndex { get; set; }
     [SerializeField] private Material[] flowerMaterials;
     private SkinnedMeshRenderer skinnedMeshRenderer;
 

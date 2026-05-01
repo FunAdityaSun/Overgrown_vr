@@ -13,8 +13,8 @@ public class PlayerReadyState : NetworkBehaviour
             IsPlayerReady = true;
             Debug.Log("I am ready!");
 
-            // Update ready text for local player
-            TutorialManager tutorialManager = FindObjectOfType<TutorialManager>();
+            // get tutorialManager
+            TutorialManager tutorialManager = GameObject.FindFirstObjectByType<TutorialManager>();
             if (tutorialManager != null && tutorialManager.countdownText != null)
             {
                 tutorialManager.countdownText.text = "Waiting for other players...";
