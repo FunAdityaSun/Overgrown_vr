@@ -96,6 +96,10 @@ public class RaycastScript : NetworkBehaviour
             {
                 HandleItemInteractions();
             }
+            else
+            {
+                Debug.Log("No valid interaction!");
+            }
         }
 
         // Pickup or drop object after trigger button is held for a certain amount of time
