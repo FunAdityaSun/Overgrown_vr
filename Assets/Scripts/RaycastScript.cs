@@ -624,4 +624,18 @@ public class RaycastScript : NetworkBehaviour
             return;
         }
     }
+
+    // If player disconnects while holding an item, drop the item so it doesn't get stuck in limbo
+    public override void Despawned(NetworkRunner runner, bool hasState)
+    {
+        ClearOutline();
+        if (heldObject != null)
+        {
+            heldObject.transform.SetParent(null);
+            heldObject.GetComponent<Rigidbody>().isKinematic = false;
+        }
+
+        heldObject = null;
+        isHoldingObject = false;
+    }
 }

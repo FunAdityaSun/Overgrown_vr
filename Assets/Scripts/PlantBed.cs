@@ -20,6 +20,8 @@ public class PlantBed : NetworkBehaviour
 
     private int numSlots;
     private ParticleSystem[] slotParticles;
+    private ParticleSystem[] seedParticles;
+    private bool[] _localIsPlanted;
 
     [Networked, Capacity(8)]
     private NetworkArray<PlantSlot> plantSlots => default;
@@ -33,12 +35,20 @@ public class PlantBed : NetworkBehaviour
         // get slots automatically from children
         numSlots = transform.childCount;
         slotParticles = new ParticleSystem[numSlots];
+        seedParticles = new ParticleSystem[numSlots];
+        _localIsPlanted = new bool[numSlots];
 
         for (int i = 0; i < numSlots; i++)
         {
             Transform slot = transform.GetChild(i);
-            slotParticles[i] = slot.GetComponentInChildren<ParticleSystem>();
-            slotParticles[i].Stop();
+
+            Transform slotParticlesTransform = slot.Find("plant_particles");
+            Transform seedParticlesTransform = slot.Find("seed_particles");
+
+            if (slotParticlesTransform != null) slotParticles[i] = slotParticlesTransform.GetComponentInChildren<ParticleSystem>();
+            if (seedParticlesTransform != null) seedParticles[i] = seedParticlesTransform.GetComponentInChildren<ParticleSystem>();
+            if (slotParticles[i] != null) slotParticles[i]?.Stop();
+            if (seedParticles[i] != null) seedParticles[i]?.Stop();
         }
     }
 
@@ -57,6 +67,20 @@ public class PlantBed : NetworkBehaviour
     {
         for (int i = 0; i < numSlots; i++)
         {
+            if (seedParticles[i] != null)
+            {
+                if (plantSlots[i].isPlanted && !_localIsPlanted[i])
+                {
+                    seedParticles[i].Play();
+                    _localIsPlanted[i] = true;
+                }
+                else if (!plantSlots[i].isPlanted && _localIsPlanted[i])
+                {
+                    seedParticles[i].Stop();
+                    _localIsPlanted[i] = false;
+                }
+            }
+
             if (slotParticles[i] == null) continue;
 
             if (plantSlots[i].isWatered && !plantSlots[i].isGrown)
