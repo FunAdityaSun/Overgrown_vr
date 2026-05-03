@@ -17,10 +17,31 @@ public class CharacterMovement : NetworkBehaviour
     public override void Spawned()
     {
         charCntrl = GetComponent<CharacterController>();
-        if (HasStateAuthority && HasInputAuthority)
+        // if (HasStateAuthority && HasInputAuthority)
+        // {
+        //     cameraObj.GetComponent<Camera>().enabled = true;
+        //     return;
+        // }
+
+        if (HasInputAuthority)
         {
             cameraObj.GetComponent<Camera>().enabled = true;
-            return;
+        }
+        else
+        {
+            cameraObj.GetComponent<Camera>().enabled = false;
+
+            var trackedPoseDriver = cameraObj.GetComponent<UnityEngine.SpatialTracking.TrackedPoseDriver>();
+            if (trackedPoseDriver != null)
+            {
+                trackedPoseDriver.enabled = false;
+            }
+
+            var audioListener = cameraObj.GetComponent<AudioListener>();
+            if (audioListener != null)
+            {
+                audioListener.enabled = false;
+            }
         }
     }
 

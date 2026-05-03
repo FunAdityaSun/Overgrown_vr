@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 9039205698269674594}
   - component: {fileID: 8276117986701189280}
   - component: {fileID: 4229000469986365546}
-  - component: {fileID: -3133135785802461695}
   - component: {fileID: -6011812001675237549}
+  - component: {fileID: 7064549904756076938}
+  - component: {fileID: 4420398071592171319}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -118,11 +119,27 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 9039205698269674594}
-  - {fileID: -3133135785802461695}
   - {fileID: -6011812001675237549}
+  - {fileID: 7064549904756076938}
+  - {fileID: 4420398071592171319}
+  - {fileID: 3542036708973802992}
   - {fileID: 4485881998384435807}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &-3133135785802461695
+--- !u!114 &-6011812001675237549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2571153171339265014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85423cbd71b78b449b78edcf09446324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerReadyState
+  _IsPlayerReady:
+    _value: 0
+--- !u!114 &7064549904756076938
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -139,7 +156,7 @@ MonoBehaviour:
   SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
---- !u!114 &-6011812001675237549
+--- !u!114 &4420398071592171319
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,11 +165,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2571153171339265014}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85423cbd71b78b449b78edcf09446324, type: 3}
+  m_Script: {fileID: 11500000, guid: 55acd4beef7b5d9498e8fa8a7d1a38b5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerReadyState
-  _IsPlayerReady:
-    _value: 0
+  m_EditorClassIdentifier: Assembly-CSharp::VRHeadSync
+  vrCamera: {fileID: 3542036709393996014}
+  _NetworkedRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &5777830405096308824
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,6 +181,7 @@ GameObject:
   - component: {fileID: 7142708732149857873}
   - component: {fileID: 3316701651014396492}
   - component: {fileID: 3086312791859726300}
+  - component: {fileID: 3572916535018403951}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -243,6 +261,19 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3572916535018403951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5777830405096308824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0116b186a8d314a9c018f618a09848, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VRBodySync
+  vrCamera: {fileID: 3542036709393996014}
 --- !u!1001 &6054750070357356640
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -321,6 +352,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 6747136862010003515}
   m_SourcePrefab: {fileID: 100100000, guid: 186741bf17cbb0e4fa3ef06daa1f190f, type: 3}
+--- !u!114 &3542036708973802992 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7287137019966064016, guid: 186741bf17cbb0e4fa3ef06daa1f190f, type: 3}
+  m_PrefabInstance: {fileID: 6054750070357356640}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 701ab2146163f7d48ba334bdf1d54790, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &3542036708973802993 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7287137019966064017, guid: 186741bf17cbb0e4fa3ef06daa1f190f, type: 3}
@@ -351,8 +393,6 @@ MonoBehaviour:
   player: {fileID: 4576046545444964323}
   rayDistance: 10
   systemControlCanvasPrefab: {fileID: 3241870209713163128, guid: 11e4340c7f4389f4d9254cb60377c55d, type: 3}
-  systemControlIcons:
-  - {fileID: 0}
   targetPosition: {x: 0.5, y: -0.3, z: 1}
   requiredHoldTime: 0.5
   interactionSounds: {fileID: 11400000, guid: 18d11d71fcbb72b45a7f2fac17615453, type: 2}

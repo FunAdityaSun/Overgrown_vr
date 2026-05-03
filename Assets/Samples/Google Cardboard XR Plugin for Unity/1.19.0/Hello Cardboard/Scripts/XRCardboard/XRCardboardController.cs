@@ -6,8 +6,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SpatialTracking;
+using Fusion;
 
-public class XRCardboardController : MonoBehaviour
+public class XRCardboardController : NetworkBehaviour
 {
     [SerializeField]
     Transform cameraTransform = default;
@@ -44,6 +45,23 @@ public class XRCardboardController : MonoBehaviour
 
     void Start()
     {
+        if (Object == null || Object.IsValid == false)
+        {
+#if UNITY_EDITOR
+            SetObjects(vrActive);
+#else
+            SetObjects(UnityEngine.XR.XRSettings.enabled);
+#endif
+        }
+    }
+
+    public override void Spawned()
+    {
+        if (HasInputAuthority == false)
+        {
+            return;
+        }
+
 #if UNITY_EDITOR
         SetObjects(vrActive);
 #else
@@ -53,6 +71,11 @@ public class XRCardboardController : MonoBehaviour
 
     void Update()
     {
+        if (Object != null && HasInputAuthority == false)
+        {
+            return;
+        }
+
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Escape))
 #else

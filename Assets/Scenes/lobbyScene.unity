@@ -13316,6 +13316,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1023661071}
   m_CullTransparentMesh: 1
+--- !u!1 &1025652327 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3542036709393996020, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
+  m_PrefabInstance: {fileID: 9120394970658329135}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1038017240
 GameObject:
   m_ObjectHideFlags: 0
@@ -26169,12 +26174,29 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4485881998384435807, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
   m_PrefabInstance: {fileID: 9120394970658329135}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1025652327}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 322c6be036a7cf240bc8ff5e4cf18c11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RaycastScript
+--- !u!114 &2098971780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025652327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkTransform
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!1001 &2102003253
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26818,6 +26840,22 @@ PrefabInstance:
       propertyPath: SortKey
       value: 419204008
       objectReference: {fileID: 0}
+    - target: {fileID: 4229000469986365546, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
+      propertyPath: NetworkedBehaviours.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4229000469986365546, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
+      propertyPath: 'NetworkedBehaviours.Array.data[4]'
+      value: 
+      objectReference: {fileID: 37090297}
+    - target: {fileID: 4229000469986365546, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
+      propertyPath: 'NetworkedBehaviours.Array.data[5]'
+      value: 
+      objectReference: {fileID: 2098971772}
+    - target: {fileID: 4229000469986365546, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
+      propertyPath: 'NetworkedBehaviours.Array.data[6]'
+      value: 
+      objectReference: {fileID: 2098971780}
     - target: {fileID: 4485881998384435807, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
       propertyPath: rayDistance
       value: 10
@@ -26901,7 +26939,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3542036709393996020, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2098971780}
   m_SourcePrefab: {fileID: 100100000, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
