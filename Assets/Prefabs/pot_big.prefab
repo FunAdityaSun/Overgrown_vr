@@ -276,7 +276,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: ab6e5e40cb97bdc45a9de26f614dafc0, type: 2}
   - {fileID: 2100000, guid: 0235c26cad2f5d4478dfb1b44048a36f, type: 2}
   - {fileID: 2100000, guid: 0ac21e9bc0e30d4468371a3a40dab5c5, type: 2}
-  numSlots: 3
 --- !u!114 &7160024557183227832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,7 +289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Outline
   outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineColor: {r: 0, g: 1, b: 0, a: 1}
   outlineWidth: 4
   precomputeOutline: 0
   bakeKeys: []

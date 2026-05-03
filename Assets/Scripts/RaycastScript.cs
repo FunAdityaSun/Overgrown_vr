@@ -30,6 +30,7 @@ public class RaycastScript : NetworkBehaviour
     private Image[] systemControlIcons;
     private int currentSystemControlIdx = 1;
     private float nextJoyStickMove = 0f;
+    private GameObject[] systemControlPanels = new GameObject[2]; // 0 = main, 1 = controls
 
     private GameObject currentUITarget;
 
@@ -63,6 +64,8 @@ public class RaycastScript : NetworkBehaviour
         lastOutline = null;
         lightSaber = GetComponent<LineRenderer>();
         systemControlCanvas.SetActive(false);
+        systemControlPanels[0] = systemControlCanvas.transform.GetChild(0).gameObject;
+        systemControlPanels[1] = systemControlCanvas.transform.GetChild(1).gameObject;
     }
 
     void Update()
@@ -71,15 +74,105 @@ public class RaycastScript : NetworkBehaviour
         {
             return;
         }
+        Vector3 saberOrigin = transform.position + new Vector3(0, -0.5f, 0);
+        Ray ray = new Ray(saberOrigin, transform.forward);
+
+        // Shows raycast in game
+        lightSaber.enabled = true;
+        lightSaber.SetPosition(0, saberOrigin);
+        lightSaber.SetPosition(1, saberOrigin + transform.forward * rayDistance);
+
+        UnityEngine.Debug.DrawRay(saberOrigin, transform.forward * rayDistance, Color.red);
+
+        GameObject newUITarget = null;
+
+        int cominedLayerMask = LayerMask.GetMask("UI", "Interactable", "Floor", "Default");
+        if (Physics.Raycast(ray, out hit, rayDistance, cominedLayerMask))
+        {
+            // Handle UI interactions
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("UI"))
+            {
+                newUITarget = hit.transform.gameObject;
+            }
+            // Handle interactable objects
+            else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Interactable"))
+            {
+                //currentUITarget = null;
+                Outline currentOutline = hit.collider.GetComponent<Outline>();
+
+                // If new object hit, update outline
+                if (currentOutline != null)
+                {
+                    if (lastOutline != currentOutline)
+                    {
+                        ClearOutline();
+                        currentOutline.enabled = true;
+                        lastOutline = currentOutline;
+                    }
+                }
+                else
+                {
+                    ClearOutline();
+                }
+
+
+            }
+            else
+            {
+                //currentUITarget = null;
+                ClearOutline();
+            }
+        }
+        else
+        {
+            ClearOutline();
+        }
+
+        // Update UI target and button highlight if changed
+        if (currentUITarget != newUITarget)
+        {
+            UnityEngine.UI.Image background;
+            if (currentUITarget != null)
+            {
+                background = currentUITarget.GetComponent<UnityEngine.UI.Image>();
+                if (background != null)
+                {
+                    background.color = Color.white;
+                }
+            }
+
+            if (newUITarget != null)
+            {
+                background = newUITarget.GetComponent<UnityEngine.UI.Image>();
+                if (background != null)
+                {
+                    background.color = Color.yellow;
+                }
+            }
+            currentUITarget = newUITarget;
+        }
+
+        // Fixed transform so it clip less in the ground
+        if (currentState == GameState.SystemControl)
+        {
+            systemControlCanvas.transform.position = transform.position + transform.forward * 0.25f; 
+            systemControlCanvas.transform.rotation = this.transform.rotation;
+            systemControlCanvas.SetActive(true);
+        }
+
+        // if (Runner != null && !(HasStateAuthority && HasInputAuthority))
+        // {
+        //     return;
+        // }
         // If trigger button is pressed
-        if ((Input.GetButtonUp("js0") || Input.GetKeyUp(KeyCode.R)) && holdTimer < requiredHoldTime && holdTimer > 0f)
+        if (Input.GetButtonDown("js0") || Input.GetKeyDown(KeyCode.R))
         {
             // Teleport player to hit point on floor
-            if (hit.collider.CompareTag("Floor"))
+            if (hit.collider != null && hit.collider.CompareTag("Floor"))
             {
                 TeleportPlayer(new Vector3(hit.point.x, player.position.y + 0.2f, hit.point.z));
             }
-            else if (hit.collider.CompareTag("ReadyButton"))
+            else if (hit.collider != null && hit.collider.CompareTag("ReadyButton"))
             {
                 if (playerReadyState != null)
                 {
@@ -103,34 +196,20 @@ public class RaycastScript : NetworkBehaviour
         }
 
         // Pickup or drop object after trigger button is held for a certain amount of time
-        if (Input.GetButton("js0") || Input.GetKey(KeyCode.R))
+        if (Input.GetButtonDown("js2") || Input.GetKeyDown(KeyCode.E) && currentState == GameState.Normal)
         {
-            if (holdTimer >= 0f)
+            if (isHoldingObject)
             {
-                holdTimer += Time.deltaTime;
+                RPC_DropHeldItem(heldObject);
             }
-            if (holdTimer >= requiredHoldTime)
+            else if (hit.collider.CompareTag("Pot") || hit.collider.CompareTag("Watercan") || hit.collider.CompareTag("Seedbag"))
             {
-                if (isHoldingObject)
-                {
-                    RPC_DropHeldItem(heldObject);
-                }
-                else if (hit.collider.CompareTag("Pot") || hit.collider.CompareTag("Watercan") || hit.collider.CompareTag("Seedbag"))
-                {
-                    RPC_PickupItem(hit.collider.gameObject.GetComponent<NetworkObject>());
-                }
-
-                holdTimer = -1f;
+                RPC_PickupItem(hit.collider.gameObject.GetComponent<NetworkObject>());
             }
         }
-        else
-        {
-            // Debug.Log("Hold timer: " + holdTimer);
-            holdTimer = 0f;
-        }
 
-        // Open system control menu if X button is presssed
-        if ((Input.GetButtonDown("js2") || Input.GetKeyDown(KeyCode.Q)) && currentState == GameState.Normal)
+        // Open system control menu if B button is presssed
+        if ((Input.GetButtonDown("js5") || Input.GetKeyDown(KeyCode.Q)) && currentState == GameState.Normal)
         {
             currentState = GameState.SystemControl;
         }
@@ -285,95 +364,95 @@ public class RaycastScript : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (Runner != null && !(HasStateAuthority && HasInputAuthority))
-        {
-            return;
-        }
-        Vector3 saberOrigin = transform.position + new Vector3(0, -0.5f, 0);
-        Ray ray = new Ray(saberOrigin, transform.forward);
+        // if (Runner != null && !(HasStateAuthority && HasInputAuthority))
+        // {
+        //     return;
+        // }
+        // Vector3 saberOrigin = transform.position + new Vector3(0, -0.5f, 0);
+        // Ray ray = new Ray(saberOrigin, transform.forward);
 
-        // Shows raycast in game
-        lightSaber.enabled = true;
-        lightSaber.SetPosition(0, saberOrigin);
-        lightSaber.SetPosition(1, saberOrigin + transform.forward * rayDistance);
+        // // Shows raycast in game
+        // lightSaber.enabled = true;
+        // lightSaber.SetPosition(0, saberOrigin);
+        // lightSaber.SetPosition(1, saberOrigin + transform.forward * rayDistance);
 
-        UnityEngine.Debug.DrawRay(saberOrigin, transform.forward * rayDistance, Color.red);
+        // UnityEngine.Debug.DrawRay(saberOrigin, transform.forward * rayDistance, Color.red);
 
-        GameObject newUITarget = null;
+        // GameObject newUITarget = null;
 
-        int cominedLayerMask = LayerMask.GetMask("UI", "Interactable", "Floor", "Default");
-        if (Physics.Raycast(ray, out hit, rayDistance, cominedLayerMask))
-        {
-            // Handle UI interactions
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("UI"))
-            {
-                newUITarget = hit.transform.gameObject;
-            }
-            // Handle interactable objects
-            else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Interactable"))
-            {
-                //currentUITarget = null;
-                Outline currentOutline = hit.collider.GetComponent<Outline>();
+        // int cominedLayerMask = LayerMask.GetMask("UI", "Interactable", "Floor", "Default");
+        // if (Physics.Raycast(ray, out hit, rayDistance, cominedLayerMask))
+        // {
+        //     // Handle UI interactions
+        //     if (hit.collider.gameObject.layer == LayerMask.NameToLayer("UI"))
+        //     {
+        //         newUITarget = hit.transform.gameObject;
+        //     }
+        //     // Handle interactable objects
+        //     else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Interactable"))
+        //     {
+        //         //currentUITarget = null;
+        //         Outline currentOutline = hit.collider.GetComponent<Outline>();
 
-                // If new object hit, update outline
-                if (currentOutline != null)
-                {
-                    if (lastOutline != currentOutline)
-                    {
-                        ClearOutline();
-                        currentOutline.enabled = true;
-                        lastOutline = currentOutline;
-                    }
-                }
-                else
-                {
-                    ClearOutline();
-                }
+        //         // If new object hit, update outline
+        //         if (currentOutline != null)
+        //         {
+        //             if (lastOutline != currentOutline)
+        //             {
+        //                 ClearOutline();
+        //                 currentOutline.enabled = true;
+        //                 lastOutline = currentOutline;
+        //             }
+        //         }
+        //         else
+        //         {
+        //             ClearOutline();
+        //         }
 
 
-            }
-            else
-            {
-                //currentUITarget = null;
-                ClearOutline();
-            }
-        }
-        else
-        {
-            ClearOutline();
-        }
+        //     }
+        //     else
+        //     {
+        //         //currentUITarget = null;
+        //         ClearOutline();
+        //     }
+        // }
+        // else
+        // {
+        //     ClearOutline();
+        // }
 
-        // Update UI target and button highlight if changed
-        if (currentUITarget != newUITarget)
-        {
-            UnityEngine.UI.Image background;
-            if (currentUITarget != null)
-            {
-                background = currentUITarget.GetComponent<UnityEngine.UI.Image>();
-                if (background != null)
-                {
-                    background.color = Color.white;
-                }
-            }
+        // // Update UI target and button highlight if changed
+        // if (currentUITarget != newUITarget)
+        // {
+        //     UnityEngine.UI.Image background;
+        //     if (currentUITarget != null)
+        //     {
+        //         background = currentUITarget.GetComponent<UnityEngine.UI.Image>();
+        //         if (background != null)
+        //         {
+        //             background.color = Color.white;
+        //         }
+        //     }
 
-            if (newUITarget != null)
-            {
-                background = newUITarget.GetComponent<UnityEngine.UI.Image>();
-                if (background != null)
-                {
-                    background.color = Color.yellow;
-                }
-            }
-            currentUITarget = newUITarget;
-        }
+        //     if (newUITarget != null)
+        //     {
+        //         background = newUITarget.GetComponent<UnityEngine.UI.Image>();
+        //         if (background != null)
+        //         {
+        //             background.color = Color.yellow;
+        //         }
+        //     }
+        //     currentUITarget = newUITarget;
+        // }
 
-        // Fixed transform so it clip less in the ground
-        if (currentState == GameState.SystemControl)
-        {
-            systemControlCanvas.transform.position = transform.position + transform.forward * 0.25f; 
-            systemControlCanvas.transform.rotation = this.transform.rotation;
-            systemControlCanvas.SetActive(true);
-        }
+        // // Fixed transform so it clip less in the ground
+        // if (currentState == GameState.SystemControl)
+        // {
+        //     systemControlCanvas.transform.position = transform.position + transform.forward * 0.25f; 
+        //     systemControlCanvas.transform.rotation = this.transform.rotation;
+        //     systemControlCanvas.SetActive(true);
+        // }
     }
 
     // Clear the outline from the last hit object
@@ -452,19 +531,32 @@ public class RaycastScript : NetworkBehaviour
             nextJoyStickMove = Time.time + 0.2f; // Add a delay to prevent rapid changes
         }
 
-        // Select menu option if B button is pressed
-        if (Input.GetButtonDown("js5") || Input.GetKeyDown(KeyCode.E))
+        // Select menu option if X button is pressed
+        if (Input.GetButtonDown("js2") || Input.GetKeyDown(KeyCode.E) && currentState == GameState.SystemControl)
         {
-            switch (currentSystemControlIdx)
+            bool controlsPanelActive = systemControlPanels[1].activeSelf;
+            if (!controlsPanelActive)
             {
-                case 1: // Resume game
-                    systemControlCanvas.SetActive(false);
-                    FreezePlayer(false);
-                    currentState = GameState.Normal;
-                    break;
-                case 2: // Quit game
-                    Application.Quit();
-                    break;
+                switch (currentSystemControlIdx)
+                {
+                    case 1: // Resume game
+                        systemControlCanvas.SetActive(false);
+                        FreezePlayer(false);
+                        currentState = GameState.Normal;
+                        break;
+                    case 2: // Show controls panel
+                        systemControlPanels[0].SetActive(false);
+                        systemControlPanels[1].SetActive(true);
+                        break;
+                    case 3: // Quit game
+                        Application.Quit();
+                        break;
+                }
+            }
+            else
+            {
+                systemControlPanels[1].SetActive(false);
+                systemControlPanels[0].SetActive(true);
             }
         }
     }

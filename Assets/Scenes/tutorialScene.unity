@@ -1157,7 +1157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 13}
   m_SizeDelta: {x: 750, y: 550}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &595337570
@@ -1180,20 +1180,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Overgrown VR is a cooperative plant growing simulator where players run
-    a greenhouse together. When you are done with the Tutorial, look at the big \"Ready\"
-    button and press the Trigger / OK \n\nMove around using the joystick, and Press
-    Trigger / OK to interact.\nPressing trigger teleports on the ground using a raycast.\nLook
-    at interactable objects and they will be outlined.\nPress the X button to open
-    the pause menu, you can either Resume or Quit by pressing B.\nPress the trigger
-    to interact with certain objects.\nHold the trigger to pick up / grab certain
-    objects.\n\nTo grow a flower:\n1. Grab a seed bag the customer wants from the
-    back storage area.\n2. Plant it in one of the main plant beds on the left side
-    greenhouse.\n3. Grab a watering can from the right side greenhouse.\n4. Fill
-    that watering can using the well.\n5. If the customer wants a specific color,
-    dye water using the dye sacks.\n6. Water the flower by interacting with the plant
-    bed.\n7. Grab a pot the customer wants from the back storage area.\n8. While
-    holding the pot, interact with a fully grown flower to put it in."
+  m_text: "Controls:\n- Movement\n\t- Joystick\n\t- Teleport  :  Trigger/OK button
+    when looking at ground\n- Interaction\n\t- Pick up and drop object  :  X button\n\t-
+    Use object  :  Trigger/ OK button whle holding object\n- Pause Menu  :  B button\n\nHow
+    to play:\n1. Pick up seed bag and use it on soil bed to plant seed\n2. Pick up
+    watering can and use on well to fill it up, use on seed dye bags to select color
+    of flower\n3. Use filled watering can on soil bed with seeds to grow flower\n4.
+    Pick up pot and use on flower to put flower in pot\n5. Give pot with flower to
+    NPC\n\nHints:\n- All objects with white outline can be pick up/ dropped, ones
+    with green outline can be interacted with while holding the correct object.\n-
+    Each seedbag has 3 uses\n- Water can be dyed using dye bags\n- Use pots to pick
+    up flowers\n- NPC tell you what they want after thinking for a bit"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1220,13 +1217,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
-  m_fontSizeBase: 22
+  m_fontSize: 21
+  m_fontSizeBase: 21
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -1823,16 +1820,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 860733126}
-  m_LocalRotation: {x: 0.7071059, y: -0.000000010814694, z: -0.00000001025873, w: 0.7071078}
-  m_LocalPosition: {x: 0, y: 0, z: -1403}
+  m_LocalRotation: {x: -0, y: 0.26569986, z: -0, w: 0.9640558}
+  m_LocalPosition: {x: 0, y: 0, z: -1613}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2070203347}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 30.817, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 366, y: -37}
+  m_AnchoredPosition: {x: 1157, y: 108}
   m_SizeDelta: {x: 500, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &860733128
@@ -2419,17 +2416,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1092125852}
-  m_LocalRotation: {x: 0.70710576, y: -0, z: -0, w: 0.7071079}
+  m_LocalRotation: {x: -0, y: -0.22301826, z: -0, w: 0.97481424}
   m_LocalPosition: {x: 0, y: 0, z: -1425.5}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 595337569}
   m_Father: {fileID: 2070203347}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -25.773, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -258.75, y: -38.8}
+  m_AnchoredPosition: {x: -953.00134, y: 107}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1092125854

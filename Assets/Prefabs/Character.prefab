@@ -351,6 +351,8 @@ MonoBehaviour:
   player: {fileID: 4576046545444964323}
   rayDistance: 10
   systemControlCanvasPrefab: {fileID: 3241870209713163128, guid: 11e4340c7f4389f4d9254cb60377c55d, type: 3}
+  systemControlIcons:
+  - {fileID: 0}
   targetPosition: {x: 0.5, y: -0.3, z: 1}
   requiredHoldTime: 0.5
   interactionSounds: {fileID: 11400000, guid: 18d11d71fcbb72b45a7f2fac17615453, type: 2}

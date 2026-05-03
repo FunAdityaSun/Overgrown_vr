@@ -2568,52 +2568,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Overgrown VR is a cooperative plant growing simulator where players run
-    a greenhouse together. See picture on the right,
-
-
-    Move around using the
-    joystick, and Press Trigger / OK to interact.
-
-    Pressing trigger teleports
-    on the ground using a raycast.
-
-    Look at interactable objects and they will
-    be outlined.
-
-    Press the X button to open the pause menu, you can either Resume
-    or Quit by pressing B.
-
-    Press the trigger to interact with certain objects.
-
-    Hold
-    the trigger to pick up / grab certain objects.
-
-
-    To grow a flower:
-
-    1.
-    Grab a seed bag the customer wants from the back storage area.
-
-    2. Plant
-    it in one of the main plant beds on the left side greenhouse.
-
-    3. Grab a
-    watering can from the right side greenhouse.
-
-    4. Fill that watering can using
-    the well.
-
-    5. If the customer wants a specific color, dye water using the
-    dye sacks.
-
-    6. Water the flower by interacting with the plant bed.
-
-    7.
-    Grab a pot the customer wants from the back storage area.
-
-    8. While holding
-    the pot, interact with a fully grown flower to put it in.'
+  m_text: "Controls:\n- Movement\n\t- Joystick\n\t- Teleport  :  Trigger/OK button
+    when looking at ground\n- Interaction\n\t- Pick up and drop object  :  X button\n\t-
+    Use object  :  Trigger/ OK button whle holding object\n- Pause Menu  :  B button\n\nHow
+    to play:\n1. Pick up seed bag and use it on soil bed to plant seed\n2. Pick up
+    watering can and use on well to fill it up, use on seed dye bags to select color
+    of flower\n3. Use filled watering can on soil bed with planted seeds to grow
+    flower\n4. Pick up pot and use on flower to put flower in pot\n5. Give pot with
+    flower to NPC\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -11048,7 +11010,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -154.68752}
+  m_AnchoredPosition: {x: 0, y: -240}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!65 &854486418
@@ -16650,7 +16612,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 65.93749}
+  m_AnchoredPosition: {x: 0, y: 130}
   m_SizeDelta: {x: 250, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1312022175
@@ -18681,7 +18643,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -2.6875205}
+  m_AnchoredPosition: {x: 0, y: -114}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!65 &1481068305
@@ -21058,7 +21020,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -76.68752}
+  m_AnchoredPosition: {x: 0, y: 6}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!65 &1649158925
@@ -21788,7 +21750,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 150}
+  m_AnchoredPosition: {x: 0, y: 217}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1677613005

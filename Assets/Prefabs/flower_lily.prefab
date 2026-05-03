@@ -108,7 +108,12 @@ PrefabInstance:
       propertyPath: m_Convex
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3451118302482216456, guid: 3e0fb1fe9fc77b34da4f8eff8abc975c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3451118302482216456, guid: 3e0fb1fe9fc77b34da4f8eff8abc975c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -124,6 +129,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3e0fb1fe9fc77b34da4f8eff8abc975c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1112893064439595316}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3e0fb1fe9fc77b34da4f8eff8abc975c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 893437457600079985}
   m_SourcePrefab: {fileID: 100100000, guid: 3e0fb1fe9fc77b34da4f8eff8abc975c, type: 3}
 --- !u!1 &1153604257994599025 stripped
 GameObject:
@@ -143,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Outline
   outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineColor: {r: 0, g: 1, b: 0, a: 1}
   outlineWidth: 10
   precomputeOutline: 0
   bakeKeys: []
@@ -197,8 +205,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09d5258a738378c4ba19f63b82cfdb37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  _ParentBed: {fileID: 0}
+  _SlotIndex: 0
   flowerMaterials:
   - {fileID: 2100000, guid: 631b9d1c61ce12d4eb00a7f4e1bb1bdb, type: 2}
   - {fileID: 2100000, guid: ab6e5e40cb97bdc45a9de26f614dafc0, type: 2}
   - {fileID: 2100000, guid: 0235c26cad2f5d4478dfb1b44048a36f, type: 2}
   - {fileID: 2100000, guid: 0ac21e9bc0e30d4468371a3a40dab5c5, type: 2}
+--- !u!65 &893437457600079985
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153604257994599025}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0038572936, y: 0.0026331597, z: 0.0065383795}
+  m_Center: {x: -0.00003235793, y: -0.000060665294, z: 0.0038862487}

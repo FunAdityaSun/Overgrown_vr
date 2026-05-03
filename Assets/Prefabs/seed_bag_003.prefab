@@ -72,7 +72,12 @@ PrefabInstance:
       propertyPath: m_Convex
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3451118302482216456, guid: ab59230d22e311a4da5c0193744dcedd, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3451118302482216456, guid: ab59230d22e311a4da5c0193744dcedd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -88,6 +93,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ab59230d22e311a4da5c0193744dcedd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 526235722424882556}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ab59230d22e311a4da5c0193744dcedd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4926057231091431650}
   m_SourcePrefab: {fileID: 100100000, guid: ab59230d22e311a4da5c0193744dcedd, type: 3}
 --- !u!1 &7785431622334555314 stripped
 GameObject:
@@ -174,3 +182,24 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 2338516316241755778}
   ForceRemoteRenderTimeframe: 0
+--- !u!65 &-4926057231091431650
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7785431622334555314}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0023198843, y: 0.0016823803, z: 0.0018484012}
+  m_Center: {x: -0.00006518501, y: -0.00001984942, z: 0.0009019897}
