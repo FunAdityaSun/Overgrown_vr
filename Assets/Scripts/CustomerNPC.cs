@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using Fusion;
+using System.Threading.Tasks;
 
 [System.Serializable]
 public struct PotData
@@ -57,7 +58,7 @@ public class CustomerNPC : NetworkBehaviour
         speechBubbleCanvas.SetActive(false);
         if (HasStateAuthority)
         {
-            StartCoroutine(ThinkAndOrder());
+            //StartCoroutine(ThinkAndOrder());
         }
     }
 
@@ -84,6 +85,43 @@ public class CustomerNPC : NetworkBehaviour
                     break;
             }
         }
+    }
+
+    public void Order()
+    {
+        // Generate random indices
+        int randomPotIndex = Random.Range(0, availablePots.Length);
+        int randomFlowerIndex = Random.Range(0, availableFlowers.Length);
+
+        // Update the requested items and UI
+        // requestedPot = availablePots[randomPotIndex];
+        // requestedFlower = availableFlowers[randomFlowerIndex];
+        // desiredPotImage.sprite = requestedPot.potSprite;
+        // desiredFlowerImage.sprite = requestedFlower.flowerSprite;
+
+        // speechBubbleCanvas.SetActive(true);
+
+        NetworkedPotIndex = randomPotIndex;
+        NetworkedFlowerIndex = randomFlowerIndex;
+
+        IsOrderReady = true;
+
+        var task = Impatience();
+        // isWaitingForOrder = true;
+
+        //Debug.Log($"NPC wants: {requestedPot.potId} with {requestedFlower.flowerId}");
+    }
+
+    async Task Impatience()
+    {
+        for (int i = 0; i < 30; i++)
+        {
+            await Task.Delay((int)thinkTime * 1000);
+            //Update Impatience bar
+            Debug.Log(i*3f);
+        }
+        AIManager manager = FindObjectOfType<AIManager>();
+        manager.Lose();
     }
 
     IEnumerator ThinkAndOrder()
@@ -126,5 +164,8 @@ public class CustomerNPC : NetworkBehaviour
         // TODO: Implement logic to check if the given item matches the requested pot and flower
         
         Debug.Log("Player handed an item to the NPC!");
+
+        AIManager manager = FindObjectOfType<AIManager>();
+        manager.Despawn(gameObject.GetComponent<NetworkObject>());
     }
 }

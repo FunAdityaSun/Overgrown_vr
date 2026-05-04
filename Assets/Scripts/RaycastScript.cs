@@ -562,7 +562,7 @@ public class RaycastScript : NetworkBehaviour
     }
 
     // Freeze or unfreeze player movement and raycasting
-    void FreezePlayer(bool freeze)
+    public void FreezePlayer(bool freeze)
     {
         if (player != null) player.GetComponent<CharacterMovement>().speed = freeze ? 0 : mvmtSpeed;
         if (lightSaber != null) lightSaber.enabled = !freeze;
