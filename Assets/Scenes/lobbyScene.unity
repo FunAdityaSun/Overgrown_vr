@@ -3927,6 +3927,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 469502, guid: 04c36f15bbecd854cab50deedb5c594f, type: 3}
   m_PrefabInstance: {fileID: 276345920}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &279201225
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 279201227}
+  - component: {fileID: 279201226}
+  m_Layer: 0
+  m_Name: VoiceLogger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &279201226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 279201225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a86f533fd9917dd4da8601e9eb542c96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonVoice::Photon.Voice.Unity.VoiceLogger
+  LogLevel: 2
+--- !u!4 &279201227
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 279201225}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &283130355
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26842,18 +26887,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4229000469986365546, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
       propertyPath: NetworkedBehaviours.Array.size
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4229000469986365546, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
       propertyPath: 'NetworkedBehaviours.Array.data[4]'
       value: 
-      objectReference: {fileID: 37090297}
+      objectReference: {fileID: 9120394970658329136}
     - target: {fileID: 4229000469986365546, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
       propertyPath: 'NetworkedBehaviours.Array.data[5]'
       value: 
-      objectReference: {fileID: 2098971772}
+      objectReference: {fileID: 37090297}
     - target: {fileID: 4229000469986365546, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
       propertyPath: 'NetworkedBehaviours.Array.data[6]'
+      value: 
+      objectReference: {fileID: 2098971772}
+    - target: {fileID: 4229000469986365546, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
+      propertyPath: 'NetworkedBehaviours.Array.data[7]'
       value: 
       objectReference: {fileID: 2098971780}
     - target: {fileID: 4485881998384435807, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
@@ -26944,6 +26993,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2098971780}
   m_SourcePrefab: {fileID: 100100000, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
+--- !u!114 &9120394970658329136 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3132286274030658159, guid: 28f8757ea73b056448b52194eff00c75, type: 3}
+  m_PrefabInstance: {fileID: 9120394970658329135}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6376dd7fc23b3764483a7349b58502e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonVoice.Fusion::Photon.Voice.Fusion.VoiceNetworkObject
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -26956,3 +27016,4 @@ SceneRoots:
   - {fileID: 545217737}
   - {fileID: 1397821677}
   - {fileID: 1765891339}
+  - {fileID: 279201227}
