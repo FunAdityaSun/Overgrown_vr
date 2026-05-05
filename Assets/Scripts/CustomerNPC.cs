@@ -48,6 +48,11 @@ public class CustomerNPC : NetworkBehaviour
     public TMP_Text patienceText;
     [Networked] public float PatienceLeft { get; set; }
 
+    public Renderer npcRenderer;
+    public Color normalColor = new Color32(64, 128, 64, 255);
+    public Color angryColor = Color.red;
+    [Networked] public NetworkBool IsAngry { get; set; }
+
     // void Start()
     // {        
     //     // Hide the bubble at the start
@@ -61,6 +66,7 @@ public class CustomerNPC : NetworkBehaviour
     {
         changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
         speechBubbleCanvas.SetActive(false);
+        patienceText.transform.parent.gameObject.SetActive(false);
         if (HasStateAuthority)
         {
             //StartCoroutine(ThinkAndOrder());
@@ -70,6 +76,8 @@ public class CustomerNPC : NetworkBehaviour
     
     public override void FixedUpdateNetwork()
     {
+        if (Object == null || !Object.IsValid) return;
+
         if (HasStateAuthority && IsOrderReady)
         {
             if (PatienceLeft > 0)
@@ -90,6 +98,8 @@ public class CustomerNPC : NetworkBehaviour
 
     public override void Render()
     {
+        if (Object == null || !Object.IsValid) return;
+
         foreach (var change in changeDetector.DetectChanges(this))
         {
             switch (change)
@@ -104,11 +114,23 @@ public class CustomerNPC : NetworkBehaviour
                         speechBubbleCanvas.SetActive(false);
                     }
                     break;
+
+                case nameof(IsAngry):
+                    if (IsAngry)
+                    {
+                        npcRenderer.material.color = angryColor;
+                    }
+                    else
+                    {
+                        npcRenderer.material.color = normalColor;
+                    }
+                    break;
             }
         }
 
         if (IsOrderReady && patienceText != null)
         {
+            patienceText.transform.parent.gameObject.SetActive(true);
             patienceText.text = $"{Mathf.CeilToInt(PatienceLeft)}s";
 
             if (PatienceLeft <= 10f)
@@ -191,17 +213,43 @@ public class CustomerNPC : NetworkBehaviour
         desiredPotImage.sprite = availablePots[NetworkedPotIndex].potSprite;
         desiredFlowerImage.sprite = availableFlowers[NetworkedFlowerIndex].flowerSprite;
         speechBubbleCanvas.SetActive(true);
+        Debug.Log($"NPC wants: {availablePots[NetworkedPotIndex].potId} with {availableFlowers[NetworkedFlowerIndex].flowerId}");
     }
 
-    public void ReceiveItem(GameObject givenItem)
+    public bool ReceiveItem(GameObject givenItem)
     {
-        if (!IsOrderReady) return;
-
-        // TODO: Implement logic to check if the given item matches the requested pot and flower
+        if (!IsOrderReady) return false;
         
         Debug.Log("Player handed an item to the NPC!");
 
-        AIManager manager = FindObjectOfType<AIManager>();
-        manager.Despawn(gameObject.GetComponent<NetworkObject>());
+        FinishedPlant plantData = givenItem.GetComponent<FinishedPlant>();
+        if (plantData == null)        
+        {
+            Debug.Log("Not a finished plant!");
+            return false;
+        }
+
+        string requestedPotId = availablePots[NetworkedPotIndex].potId;
+        string requestedFlowerId = availableFlowers[NetworkedFlowerIndex].flowerId;
+
+        if (plantData.CurrentPotId == requestedPotId && plantData.CurrentFlowerId == requestedFlowerId)
+        {
+            Debug.Log($"Correct item received! I asked for {requestedPotId} with {requestedFlowerId} and got {plantData.CurrentPotId} with {plantData.CurrentFlowerId}!");
+            IsOrderReady = false;
+            IsAngry = false;
+            // isWaitingForOrder = false;
+            AIManager manager = FindObjectOfType<AIManager>();
+            manager.Despawn(gameObject.GetComponent<NetworkObject>());
+            return true;
+        }
+        else
+        {
+            Debug.Log($"Incorrect item received! I asked for {requestedPotId} with {requestedFlowerId} but got {plantData.CurrentPotId} with {plantData.CurrentFlowerId}");
+            IsAngry = true;
+            return false;
+        }
+
+        // AIManager manager = FindObjectOfType<AIManager>();
+        // manager.Despawn(gameObject.GetComponent<NetworkObject>());
     }
 }

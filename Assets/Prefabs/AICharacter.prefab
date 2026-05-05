@@ -287,7 +287,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 74.2}
+  m_AnchoredPosition: {x: 0, y: 51.1}
   m_SizeDelta: {x: -100, y: -48.700035}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2479657489948813583
@@ -477,10 +477,22 @@ PrefabInstance:
       propertyPath: SortKey
       value: 2921112174
       objectReference: {fileID: 0}
+    - target: {fileID: 2768544559156637990, guid: 4099c57226c9f9240a7e58381548b034, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 8144049043800972618, guid: 4099c57226c9f9240a7e58381548b034, type: 3}
+      propertyPath: npcRenderer
+      value: 
+      objectReference: {fileID: 8844940960990114219}
     - target: {fileID: 8144049043800972618, guid: 4099c57226c9f9240a7e58381548b034, type: 3}
       propertyPath: patienceText
       value: 
       objectReference: {fileID: 6366898617229220130}
+    - target: {fileID: 8144049043800972618, guid: 4099c57226c9f9240a7e58381548b034, type: 3}
+      propertyPath: availableFlowers.Array.data[0].flowerId
+      value: blue_lily
+      objectReference: {fileID: 0}
     - target: {fileID: 8539123274008453300, guid: 4099c57226c9f9240a7e58381548b034, type: 3}
       propertyPath: m_Name
       value: Npc_temp
@@ -552,6 +564,11 @@ RectTransform:
 --- !u!4 &8384713640438187658 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8968312612882646317, guid: 4099c57226c9f9240a7e58381548b034, type: 3}
+  m_PrefabInstance: {fileID: 588182026825647015}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8844940960990114219 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8256838226781172236, guid: 4099c57226c9f9240a7e58381548b034, type: 3}
   m_PrefabInstance: {fileID: 588182026825647015}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6054750070357356640

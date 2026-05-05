@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Flower : NetworkBehaviour
 {
+    public string baseFlowerId;
+
     [Networked] private int selectedColor { get; set; }
     [Networked] public PlantBed ParentBed { get; set; }
     [Networked] public int SlotIndex { get; set; }
@@ -40,5 +42,11 @@ public class Flower : NetworkBehaviour
     public int GetCurrentColorIndex()
     {
         return selectedColor;
+    }
+
+    public string GetFullFlowerId()
+    {
+        WaterColor colorName = (WaterColor)selectedColor;
+        return $"{colorName}_{baseFlowerId}".ToLower();
     }
 }

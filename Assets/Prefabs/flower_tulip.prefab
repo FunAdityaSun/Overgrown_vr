@@ -189,6 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09d5258a738378c4ba19f63b82cfdb37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  baseFlowerId: tulip
   _ParentBed: {fileID: 0}
   _SlotIndex: 0
   flowerMaterials:

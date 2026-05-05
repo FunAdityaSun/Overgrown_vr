@@ -93,6 +93,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3e1625ebe6985144085e56fb31f8b8bf, type: 3}
       insertIndex: -1
       addedObject: {fileID: -5140705841409018947}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3e1625ebe6985144085e56fb31f8b8bf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6179534641317768588}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3e1625ebe6985144085e56fb31f8b8bf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8460779850504795122}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3e1625ebe6985144085e56fb31f8b8bf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2228320111357456449}
   m_SourcePrefab: {fileID: 100100000, guid: 3e1625ebe6985144085e56fb31f8b8bf, type: 3}
 --- !u!1 &5535808009669972507 stripped
 GameObject:
@@ -134,7 +143,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -182,5 +191,60 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 524289
   NestedObjects: []
-  NetworkedBehaviours: []
+  NetworkedBehaviours:
+  - {fileID: 8460779850504795122}
   ForceRemoteRenderTimeframe: 0
+--- !u!114 &-6179534641317768588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5535808009669972507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5404f87f58aaf2d43b5d50ac44ec3c00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PotType
+  potId: pot3
+--- !u!114 &8460779850504795122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5535808009669972507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e0aeccff4c92c40b00ca6925ed1578, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FinishedPlant
+  _CurrentPotId:
+    _length: 0
+    _data:
+      Data: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  _CurrentFlowerId:
+    _length: 0
+    _data:
+      Data: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+--- !u!65 &2228320111357456449
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5535808009669972507}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0028681788, y: 0.002876236, z: 0.002474071}
+  m_Center: {x: 0, y: 0, z: 0.0012477064}

@@ -288,16 +288,23 @@ public class RaycastScript : NetworkBehaviour
     }
 
     // Handles giving currently held item to NPC, rn only gives pots
-    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     void RPC_GiveItemToNPC(NetworkObject npc, NetworkObject item)
     {
+        if (npc == null || item == null || !npc.IsValid || !item.IsValid) return;
+
         CustomerNPC customer = npc.GetComponent<CustomerNPC>();
         if (customer != null)
         {
-            customer.ReceiveItem(item.gameObject);
-            item.transform.SetParent(null);
-            item.gameObject.SetActive(false);
-            isHoldingObject = false;
+            bool wasCorrectItem = customer.ReceiveItem(item.gameObject);
+
+            if (wasCorrectItem)
+            {
+                item.transform.SetParent(null);
+                //item.gameObject.SetActive(false);
+                Runner.Despawn(item);
+                isHoldingObject = false;
+            }
         }
     }
 
@@ -341,7 +348,20 @@ public class RaycastScript : NetworkBehaviour
         flower.transform.localRotation = Quaternion.identity;
         nt.Teleport(flower.transform.position, flower.transform.rotation);
         AudioSystem.PlaySFXSpatial(interactionSounds.potSFX, .5f, gameObject.transform);
-        return;
+        //return;
+
+        PotType potData = heldObject.GetComponent<PotType>();
+        Flower flowerData = flower.GetComponent<Flower>();
+        Debug.Log($"Picked up a {flowerData.GetFullFlowerId()} in a {potData.potId} pot!");
+
+        FinishedPlant finishedPlant = heldObject.GetComponent<FinishedPlant>();
+
+        if (finishedPlant != null)
+        {
+            finishedPlant.CurrentPotId = potData.potId;
+            finishedPlant.CurrentFlowerId = flowerData.GetFullFlowerId();
+            Debug.Log($"Successfully Potted! Pot: {finishedPlant.CurrentPotId}, Flower: {finishedPlant.CurrentFlowerId}");
+        }
     }
 
 
