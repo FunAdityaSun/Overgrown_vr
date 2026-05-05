@@ -59,12 +59,13 @@ public class AIManager : NetworkBehaviour
         NPCsToWin--;
         if (NPCsToWin <= 0)
         {
-            Win();
+            RPC_Win();
         }
         NetworkManager.Instance.Runner.Despawn(obj);
     }
 
-    private void Win()
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void RPC_Win()
     {
         RaycastScript[] objs = GameObject.FindObjectsByType<RaycastScript>(FindObjectsSortMode.None);
         foreach (RaycastScript obj in objs)
@@ -76,7 +77,8 @@ public class AIManager : NetworkBehaviour
         var task = GoMainMenu();
     }
 
-    public void Lose()
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_Lose()
     {
         RaycastScript[] objs = GameObject.FindObjectsByType<RaycastScript>(FindObjectsSortMode.None);
         foreach(RaycastScript obj in objs)
@@ -93,6 +95,17 @@ public class AIManager : NetworkBehaviour
     {
         GameObject.FindAnyObjectByType<RaycastScript>().FreezePlayer(true);
         await Task.Delay(5000);
+
+        if (Runner != null)
+        {
+            await Runner.Shutdown();
+        }
+
+        if (NetworkManager.Instance != null)
+        {
+            Destroy(NetworkManager.Instance.gameObject);
+        }
+
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(0);
 
         while (!asyncLoad.isDone)

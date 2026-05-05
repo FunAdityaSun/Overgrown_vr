@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Fusion;
 using System.Threading.Tasks;
+using TMPro;
 
 [System.Serializable]
 public struct PotData
@@ -43,6 +44,10 @@ public class CustomerNPC : NetworkBehaviour
     private Transform mainCamera;
     private ChangeDetector changeDetector;
 
+    private float maxPatience = 240f;
+    public TMP_Text patienceText;
+    [Networked] public float PatienceLeft { get; set; }
+
     // void Start()
     // {        
     //     // Hide the bubble at the start
@@ -62,10 +67,26 @@ public class CustomerNPC : NetworkBehaviour
         }
     }
 
-    void Update()
+    
+    public override void FixedUpdateNetwork()
     {
-        
+        if (HasStateAuthority && IsOrderReady)
+        {
+            if (PatienceLeft > 0)
+            {
+                PatienceLeft -= Runner.DeltaTime;
+                
+                if (PatienceLeft <= 0)
+                {
+                    PatienceLeft = 0;
+                    IsOrderReady = false;
+                    AIManager manager = FindObjectOfType<AIManager>();
+                    manager.RPC_Lose();
+                }
+            }
+        }
     }
+
 
     public override void Render()
     {
@@ -83,6 +104,20 @@ public class CustomerNPC : NetworkBehaviour
                         speechBubbleCanvas.SetActive(false);
                     }
                     break;
+            }
+        }
+
+        if (IsOrderReady && patienceText != null)
+        {
+            patienceText.text = $"{Mathf.CeilToInt(PatienceLeft)}s";
+
+            if (PatienceLeft <= 10f)
+            {
+                patienceText.color = Color.red;
+            }
+            else
+            {
+                patienceText.color = Color.black;
             }
         }
     }
@@ -104,25 +139,26 @@ public class CustomerNPC : NetworkBehaviour
         NetworkedPotIndex = randomPotIndex;
         NetworkedFlowerIndex = randomFlowerIndex;
 
+        PatienceLeft = maxPatience;
         IsOrderReady = true;
 
-        var task = Impatience();
+        // var task = Impatience();
         // isWaitingForOrder = true;
 
         //Debug.Log($"NPC wants: {requestedPot.potId} with {requestedFlower.flowerId}");
     }
 
-    async Task Impatience()
-    {
-        for (int i = 0; i < 30; i++)
-        {
-            await Task.Delay((int)thinkTime * 1000);
-            //Update Impatience bar
-            Debug.Log(i*3f);
-        }
-        AIManager manager = FindObjectOfType<AIManager>();
-        manager.Lose();
-    }
+    // async Task Impatience()
+    // {
+    //     for (int i = 0; i < 30; i++)
+    //     {
+    //         await Task.Delay((int)thinkTime * 1000);
+    //         //Update Impatience bar
+    //         Debug.Log(i*3f);
+    //     }
+    //     AIManager manager = FindObjectOfType<AIManager>();
+    //     manager.Lose();
+    // }
 
     IEnumerator ThinkAndOrder()
     {
