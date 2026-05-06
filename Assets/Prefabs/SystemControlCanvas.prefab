@@ -280,7 +280,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Controls:\n\n- Movement:\t\tJoystick\n- Teleport on Ground:\tTrigger/OK\n-
-    Pick up / drop object:\tX\n- Use held object:\t\tTrigger/OK\n- Open Pause Menu:\tB"
+    Pickup/drop object:\tX\n- Interact/Use held item:\tTrigger/OK\n- Open Pause Menu:\tB"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -574,7 +574,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &6895015555825318612
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,7 +17,7 @@ public class AIManager : NetworkBehaviour
     private Dictionary<int, NetworkObject> _spawnedUsers = new Dictionary<int, NetworkObject>();
 
     public int FirstSpawnTime = 5;
-    public int AISpawnTime = 10;
+    public int AISpawnTime = 20;
 
     [SerializeField] private GameObject winCanvasPrefab;
     [SerializeField] private GameObject loseCanvasPrefab;

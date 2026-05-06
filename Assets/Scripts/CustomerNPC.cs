@@ -44,7 +44,7 @@ public class CustomerNPC : NetworkBehaviour
     private Transform mainCamera;
     private ChangeDetector changeDetector;
 
-    private float maxPatience = 240f;
+    public float maxPatience = 300f;
     public TMP_Text patienceText;
     [Networked] public float PatienceLeft { get; set; }
 
