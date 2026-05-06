@@ -86,6 +86,11 @@ public class RaycastScript : NetworkBehaviour
 
         GameObject newUITarget = null;
 
+        if (isHoldingObject && heldObject == null)
+        {
+            isHoldingObject = false;
+        }
+
         int cominedLayerMask = LayerMask.GetMask("UI", "Interactable", "Floor", "Default");
         if (Physics.Raycast(ray, out hit, rayDistance, cominedLayerMask))
         {
@@ -288,7 +293,7 @@ public class RaycastScript : NetworkBehaviour
     }
 
     // Handles giving currently held item to NPC, rn only gives pots
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    [Rpc(RpcSources.All, RpcTargets.All)]
     void RPC_GiveItemToNPC(NetworkObject npc, NetworkObject item)
     {
         if (npc == null || item == null || !npc.IsValid || !item.IsValid) return;
@@ -302,6 +307,8 @@ public class RaycastScript : NetworkBehaviour
             {
                 item.transform.SetParent(null);
                 //item.gameObject.SetActive(false);
+                Flower flower = item.GetComponentInChildren<Flower>();
+                Runner.Despawn(flower.Object);
                 Runner.Despawn(item);
                 isHoldingObject = false;
             }
