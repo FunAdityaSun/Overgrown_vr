@@ -279,17 +279,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Controls:
-
-    - Movement  :  Joystick
-
-    - Teleport  :  Trigger/OK
-    button when looking at ground
-
-    - Pick up and drop object  :  X button
-
-    -
-    Use object  :  Trigger/ OK button whle holding object'
+  m_text: "Controls:\n\n- Movement:\t\tJoystick\n- Teleport on Ground:\tTrigger/OK\n-
+    Pick up / drop object:\tX\n- Use held object:\t\tTrigger/OK\n- Open Pause Menu:\tB"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -316,8 +307,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -583,7 +574,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &6895015555825318612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1322,7 +1313,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Pause Menu
 
-    Press B to Res/Quit'
+    Use X to Select'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
