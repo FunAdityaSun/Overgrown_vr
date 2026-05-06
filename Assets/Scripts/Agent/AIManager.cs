@@ -16,7 +16,7 @@ public class AIManager : NetworkBehaviour
     // Dictionary of spawned user prefabs, to destroy them on disconnection
     private Dictionary<int, NetworkObject> _spawnedUsers = new Dictionary<int, NetworkObject>();
 
-    public int FirstSpawnTime = 10;
+    public int FirstSpawnTime = 5;
     public int AISpawnTime = 10;
 
     [SerializeField] private GameObject winCanvasPrefab;

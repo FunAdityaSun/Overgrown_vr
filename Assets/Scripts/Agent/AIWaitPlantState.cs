@@ -15,7 +15,16 @@ public class AIWaitPlantState : AIState
         _customerNPC = agent.gameObject.GetComponentInChildren<CustomerNPC>();
 
         _customerNPC.Order();
-        _agent.destination = GameObject.FindWithTag("Table").transform.position;
+
+        GameObject desti = GameObject.FindWithTag("Table");
+        if (desti != null)
+        {
+            Vector3 destiCenter = desti.transform.position;
+            Vector2 randomCircle = Random.insideUnitCircle * 1.5f;
+            Vector3 randomDesti = new Vector3(destiCenter.x + randomCircle.x, destiCenter.y, destiCenter.z + randomCircle.y);
+            _agent.destination = randomDesti;
+        }
+        // _agent.destination = GameObject.FindWithTag("Table").transform.position;
     }
 
     public void Exit(AIAgent agent)

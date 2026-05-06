@@ -65,7 +65,14 @@ public class CustomerNPC : NetworkBehaviour
     public override void Spawned()
     {
         changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
-        speechBubbleCanvas.SetActive(false);
+        if (IsOrderReady)
+        {
+            UpdateLocalUI();
+        }
+        else
+        {
+            speechBubbleCanvas.SetActive(false);
+        }
         patienceText.transform.parent.gameObject.SetActive(false);
         if (HasStateAuthority)
         {
@@ -133,7 +140,7 @@ public class CustomerNPC : NetworkBehaviour
             patienceText.transform.parent.gameObject.SetActive(true);
             patienceText.text = $"{Mathf.CeilToInt(PatienceLeft)}s";
 
-            if (PatienceLeft <= 10f)
+            if (PatienceLeft <= 60f)
             {
                 patienceText.color = Color.red;
             }
