@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9127631160293236439}
   - component: {fileID: 5166757358657820795}
+  - component: {fileID: 1418428496292274654}
   m_Layer: 0
   m_Name: Recorder
   m_TagString: Untagged
@@ -58,7 +59,7 @@ MonoBehaviour:
   frameDuration: 40000
   bitrate: 30000
   sourceType: 0
-  microphoneType: 0
+  microphoneType: 1
   audioClip: {fileID: 0}
   loopAudioClip: 1
   recordingEnabled: 1
@@ -68,13 +69,34 @@ MonoBehaviour:
     CategoryOptions: 0800000004000000
   editorAudioSessionPreset: 1
   androidMicrophoneSettings:
-    EnableAEC: 1
-    EnableAGC: 1
-    EnableNS: 1
+    EnableAEC: 0
+    EnableAGC: 0
+    EnableNS: 0
   stopRecordingWhenPaused: 0
   useOnAudioFilterRead: 0
   useMicrophoneTypeFallback: 1
   recordWhenJoined: 1
+--- !u!114 &1418428496292274654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2323326967952639139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ddec46cf6a4c4addbf21b6be8442124, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonVoice::Photon.Voice.Unity.WebRtcAudioDsp
+  aec: 1
+  aecHighPass: 1
+  agc: 1
+  agcCompressionGain: 9
+  agcTargetLevel: 3
+  vad: 1
+  highPass: 1
+  noiseSuppression: 1
+  reverseStreamDelayMs: 120
 --- !u!1 &2339386465236760326
 GameObject:
   m_ObjectHideFlags: 0
