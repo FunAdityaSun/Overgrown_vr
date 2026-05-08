@@ -49,9 +49,11 @@ public class CustomerNPC : NetworkBehaviour
     [Networked] public float PatienceLeft { get; set; }
 
     public Renderer npcRenderer;
-    public Color normalColor = new Color32(64, 128, 64, 255);
+    public Color normalColor = Color.green;
     public Color angryColor = Color.red;
     [Networked] public NetworkBool IsAngry { get; set; }
+    public GameObject sadMouth;
+    public GameObject happyMouth;
 
     // void Start()
     // {        
@@ -74,6 +76,8 @@ public class CustomerNPC : NetworkBehaviour
             speechBubbleCanvas.SetActive(false);
         }
         patienceText.transform.parent.gameObject.SetActive(false);
+        sadMouth.SetActive(false);
+        happyMouth.SetActive(false);
         if (HasStateAuthority)
         {
             //StartCoroutine(ThinkAndOrder());
@@ -245,18 +249,38 @@ public class CustomerNPC : NetworkBehaviour
             IsOrderReady = false;
             IsAngry = false;
             // isWaitingForOrder = false;
-            AIManager manager = FindObjectOfType<AIManager>();
-            manager.Despawn(gameObject.GetComponent<NetworkObject>());
+            // AIManager manager = FindObjectOfType<AIManager>();
+            sadMouth.SetActive(false);
+            happyMouth.SetActive(true);
+
+            DelayAndDespawn();
+
+            // manager.Despawn(gameObject.GetComponent<NetworkObject>());
             return true;
         }
         else
         {
             Debug.Log($"Incorrect item received! I asked for {requestedPotId} with {requestedFlowerId} but got {plantData.CurrentPotId} with {plantData.CurrentFlowerId}");
             IsAngry = true;
+            sadMouth.SetActive(true);
+            happyMouth.SetActive(false);
             return false;
         }
 
         // AIManager manager = FindObjectOfType<AIManager>();
         // manager.Despawn(gameObject.GetComponent<NetworkObject>());
+    }
+
+    private async void DelayAndDespawn()
+    {
+        await Task.Delay(2000);
+
+        if (this == null || Object == null || !Object.IsValid) return;
+
+        AIManager manager = FindObjectOfType<AIManager>();
+        if (manager != null)
+        {
+            manager.Despawn(gameObject.GetComponent<NetworkObject>());
+        }
     }
 }
