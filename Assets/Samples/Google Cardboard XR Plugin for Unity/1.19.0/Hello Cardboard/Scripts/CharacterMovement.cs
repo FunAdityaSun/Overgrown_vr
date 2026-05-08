@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
+using Photon.Voice.Unity;
 
 public class CharacterMovement : NetworkBehaviour
 {
@@ -26,6 +27,17 @@ public class CharacterMovement : NetworkBehaviour
         if (HasInputAuthority)
         {
             cameraObj.GetComponent<Camera>().enabled = true;
+
+            var audioSource = gameObject.GetComponent<AudioSource>();
+            if (audioSource != null)
+            {
+                audioSource.enabled = false;
+            }
+            var speaker = gameObject.GetComponent<Speaker>();
+            if (speaker != null)
+            {
+                speaker.enabled = false;
+            }
         }
         else
         {
@@ -37,11 +49,13 @@ public class CharacterMovement : NetworkBehaviour
                 trackedPoseDriver.enabled = false;
             }
 
-            var audioListener = cameraObj.GetComponent<AudioListener>();
+            var audioListener = gameObject.GetComponent<AudioListener>();
             if (audioListener != null)
             {
                 audioListener.enabled = false;
             }
+
+            
         }
     }
 
