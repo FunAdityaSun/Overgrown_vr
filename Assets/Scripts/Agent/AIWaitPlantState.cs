@@ -20,7 +20,7 @@ public class AIWaitPlantState : AIState
         if (desti != null)
         {
             Vector3 destiCenter = desti.transform.position;
-            Vector2 randomCircle = Random.insideUnitCircle * 1.5f;
+            Vector2 randomCircle = Random.insideUnitCircle * 3f;
             Vector3 randomDesti = new Vector3(destiCenter.x + randomCircle.x, destiCenter.y, destiCenter.z + randomCircle.y);
             _agent.destination = randomDesti;
         }
